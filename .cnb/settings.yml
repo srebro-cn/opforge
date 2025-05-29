@@ -3,6 +3,6 @@ workspace:
     button:
       name: opforge
       description: OpForge​（Ops=运维，Forge=锻造/知识沉淀，自动化与系统构建）
-    cpus: 16
+    cpus: 8
     disabled: false
     autoOpenWebIDE: false
