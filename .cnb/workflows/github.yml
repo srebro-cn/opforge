@@ -1,0 +1,17 @@
+main:
+  push:
+    - runner:
+        cpus: 8
+      services:
+        - docker
+        - git-clone-yyds
+      stages:
+        - name: sync to github
+          image: tencentcom/git-sync
+          imports: https://cnb.cool/srebro/credentials/-/blob/main/github.yaml
+          settings:
+            branch: main
+            auth_type: https
+            username: ${GIT_USERNAME}
+            password: ${GIT_ACCESS_TOKEN}
+            target_url: https://github.com/srebro-cn/opforge.git

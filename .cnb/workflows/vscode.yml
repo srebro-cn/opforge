@@ -1,0 +1,13 @@
+$:
+  vscode:
+    - docker:
+        image: docker.cnb.cool/sre/custom-vscode/node-18:latest
+        #image: cnbcool/default-dev-env:latest
+      runner:
+        cpus: 8
+      services:
+        - vscode
+        - docker
+      stages:
+        - name: cat /etc/os-release
+          script: cat /etc/os-release
