@@ -11,19 +11,55 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "开始使用",
         "groups": [
           {
             "group": "Get Started",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "index"
             ]
           },
           {
-            "group": "Essentials",
+            "group": "运维项目",
             "pages": [
+              {
+                "group": "企业级自动化部署平台搭建",
+                "icon": "robot",
+                "pages": [
+                  "cicd/01",
+                  "cicd/02"
+                ]
+              },
+              {
+                "group": "全链路监控+日志收集系统建设",
+                "icon": "tag",
+                "pages": [
+                  "prometheus/01",
+                  "prometheus/02"
+                ]
+              },
+              {
+                "group": "K8S容器化改造与CI/CD流程优化",
+                "icon": "square-terminal",
+                "pages": [
+                  "k8s-cicd/01",
+                  "k8s-cicd/02"
+                ]
+              },
+              {
+                "group": "CMDB资产管理平台",
+                "icon": "calendar-days",
+                "pages": [
+                  "cmdb/01",
+                  "cmdb/02"
+                ]
+              }           
+            ]
+          },
+          {
+            "group": "Mintlify下一代AI文档使用手册👋",
+            "pages": [
+              "essentials/installation",
               "essentials/markdown",
               "essentials/code",
               "essentials/images",
@@ -33,64 +69,12 @@
             ]
           }
         ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
-          }
-        ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
+    "light": "logo/light.webp",
+    "dark": "logo/dark.webp"
   },
   "footer": {
     "socials": {

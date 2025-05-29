@@ -1,7 +1,7 @@
 ---
 title: '全局设置'
 description: 'Mintlify通过docs.json文件让您完全控制文档的外观和风格'
-icon: 'gear'
+icon: 'iconfont icon-setting'
 ---
 
 每个Mintlify站点都需要一个包含核心配置设置的`docs.json`文件。了解更多关于下面的[属性](#properties)。
@@ -119,7 +119,7 @@ icon: 'gear'
   锚点数组，包括`icon`、`color`和`url`。
   <Expandable title="Anchor">
     <ResponseField name="icon" type="string">
-    用于展示锚点的[Font Awesome](https://fontawesome.com/search?q=heart)图标。
+    用于展示锚点的图标名称。
 
     示例：`comments`
     </ResponseField>
@@ -141,7 +141,7 @@ icon: 'gear'
       如果您想隐藏锚点，直到您直接链接到其中的文档，则传递`true`。
     </ResponseField>
     <ResponseField name="iconType" default="duotone" type="string">
-      以下之一："brands", "duotone", "light", "sharp-solid", "solid", 或 "thin"
+      图标类型
     </ResponseField>
 
   </Expandable>
@@ -154,10 +154,10 @@ icon: 'gear'
       最顶层锚点的名称
     </ResponseField>
     <ResponseField name="icon" default="book-open" type="string">
-      Font Awesome图标。
+      图标名称
     </ResponseField>
     <ResponseField name="iconType" default="duotone" type="string">
-      以下之一："brands", "duotone", "light", "sharp-solid", "solid", 或 "thin"
+      图标类型
     </ResponseField>
   </Expandable>
 </ResponseField>
