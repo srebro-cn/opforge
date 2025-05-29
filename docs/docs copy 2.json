@@ -22,46 +22,23 @@
             ]
           },
           {
-            "group": "运维项目",
+            "group": "企业级自动化部署平台搭建👋",
+            "icon": "robot",
             "pages": [
-              {
-                "group": "企业级自动化部署平台搭建",
-                "icon": "robot",
-                "pages": [
-                  "cicd/01",
-                  "cicd/02"
-                ]
-              },
-              {
-                "group": "全链路监控系统建设",
-                "icon": "tag",
-                "pages": [
-                  "prometheus/01",
-                  "prometheus/02"
-                ]
-              },
-              {
-                "group": "K8S容器化改造与CI/CD流程优化",
-                "icon": "square-terminal",
-                "pages": [
-                  "k8s-cicd/01",
-                  "k8s-cicd/02"
-                ]
-              },
-              {
-                "group": "CMDB资产管理平台",
-                "icon": "calendar-days",
-                "pages": [
-                  "cmdb/01",
-                  "cmdb/02"
-                ]
-              }           
+              "cicd/01",
+              "cicd/02"
+            ]
+          },
+          {
+            "group": "Kubernetes容器化改造与CI/CD流程优化👋",
+            "pages": [
+              "k8s-cicd/01",
+              "k8s-cicd/02"
             ]
           },
           {
             "group": "Mintlify下一代AI文档使用手册👋",
             "pages": [
-              "essentials/installation",
               "essentials/markdown",
               "essentials/code",
               "essentials/images",

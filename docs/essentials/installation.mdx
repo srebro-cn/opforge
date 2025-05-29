@@ -1,0 +1,157 @@
+---
+title: "安装指南"
+description: "安装CLI以在本地预览和开发您的文档"
+icon: "terminal"
+---
+
+<img
+  className="block dark:hidden my-0 pointer-events-none"
+  src="/images/local-development-light.png"
+/>
+<img
+  className="hidden dark:block my-0 pointer-events-none"
+  src="/images/local-development-dark.png"
+/>
+
+<Info>
+  **前提条件**：请在继续之前安装 [Node.js](https://nodejs.org/en)（版本19或更高）。
+</Info>
+
+**步骤1**：安装 [CLI](https://www.npmjs.com/package/mint)：
+
+<CodeGroup>
+
+```bash npm
+npm i -g mint
+```
+
+
+```bash yarn
+yarn global add mint
+```
+
+
+```bash pnpm
+pnpm add -g mint
+```
+
+</CodeGroup>
+
+**步骤2**：导航到文档目录（`docs.json`文件所在的位置）并执行以下命令：
+
+```bash
+mint dev
+```
+
+或者，如果您不想全局安装CLI，可以使用一次性脚本：
+
+<CodeGroup>
+
+```bash npm
+npx mint dev
+```
+
+
+```bash yarn
+yarn dlx mint dev
+```
+
+
+```bash pnpm
+pnpm dlx mint dev
+```
+
+</CodeGroup>
+
+您的文档的本地预览将在 `http://localhost:3000` 可用。
+
+## 更新
+
+每个CLI发布版本都与特定版本的Mintlify平台相关联。如果您的本地预览与生产版本不一致，请更新CLI：
+
+<CodeGroup>
+
+```bash npm
+npm i -g mint@latest
+```
+
+
+```bash yarn
+yarn global upgrade mint
+```
+
+
+```bash pnpm
+pnpm up --global mint
+```
+
+</CodeGroup>
+
+## 自定义端口
+
+默认情况下，CLI使用3000端口。您可以使用 `--port` 标志自定义端口。例如，要在端口3333上运行CLI，使用以下命令：
+
+```bash
+mint dev --port 3333
+```
+
+如果您尝试在已被占用的端口上运行，它将使用下一个可用端口：
+
+```md
+端口3000已被占用。尝试使用3001代替。
+```
+
+## 其他命令
+
+虽然 `mint dev` 是最常用的命令，但还有其他命令可用于管理您的文档。
+
+### 查找损坏的链接
+
+CLI可以帮助验证文档中的引用链接。要识别任何损坏的链接，请使用以下命令：
+
+```bash
+mint broken-links
+```
+
+### 检查OpenAPI规范
+
+您可以使用CLI检查OpenAPI文件中的错误，使用以下命令：
+
+```bash
+mint openapi-check <openapiFilenameOrUrl>
+```
+
+您可以传入文件名（例如 `./openapi.yaml`）或URL（例如 `https://petstore3.swagger.io/api/v3/openapi.json`）。
+
+### 重命名文件
+
+您可以使用以下命令重命名文件：
+
+```bash
+mint rename <oldFilename> <newFilename>
+```
+
+这比普通的文件重命名更好，因为它还会更新所有对该文件的引用，确保不会出现损坏的链接。
+
+## 格式化
+
+在本地开发时，我们建议使用IDE扩展来识别和格式化MDX。
+
+如果您使用Cursor、Windsurf或VSCode，我们推荐使用 [MDX VSCode扩展](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) 进行语法高亮，使用 [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) 进行代码格式化。
+
+如果您使用JetBrains，我们推荐使用 [MDX IntelliJ IDEA插件](https://plugins.jetbrains.com/plugin/14944-mdx) 进行语法高亮，并设置 [Prettier](https://prettier.io/docs/webstorm) 进行代码格式化。
+
+## 故障排除
+
+<AccordionGroup>
+  <Accordion title='错误：无法使用darwin-arm64运行时加载"sharp"模块'>
+    这可能是由于node版本过旧导致的。尝试以下步骤：
+
+    1. 删除当前安装的mint CLI版本：`npm remove -g mint`
+    2. 升级到Node v19或更高版本。
+    3. 重新安装mint CLI：`npm install -g mint`
+  </Accordion>
+  <Accordion title="问题：遇到未知错误">
+    解决方案：转到设备根目录并删除 ~/.mintlify 文件夹。之后，重新运行 `mint dev`。
+  </Accordion>
+</AccordionGroup>
