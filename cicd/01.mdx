@@ -5,39 +5,54 @@ description: 'Ansible + jenkins + Library'
 
 ```mermaid
 mindmap
-  root((JenkinsGuide))
-    基础内容
-      Jenkins 的历史及发展
-      持续集成的概念简述
-      Jenkins 的几种安装方式
-      Jenkins根目录与内置变量概述
-    自由风格，自由构建
-      认识自由风格
-      使用自由风格构建Java和Go编译类项目
-      使用自由风格构建Vue和PHP静态文件发布项目
-      使用自由风格构建安卓APP
-    Pipeline
-      认识Pipeline
-      Pipeline语法观止
-      基于pipeline简单构建一个项目
-      pipeline结合ansible进行批量发布
-    共享库
-    	认识共享库
-    	学习一些简单的groovy语法
-    	基于共享库的最佳实践
-    特别章节:企业私服Nexus
-    	介绍及安装
-    	配置各语言私服
-    	各语言实践
-    特别章节:最佳实践深度解析
-    	回滚的最佳实践
-    	优秀插件，如虎添翼
-    	分布式，slave的实践
-    特别章节:权限管理
-    	Jenkins配置openldap认证
-    	基于Role插件控制权限的实践
-    	结合openldap分组的权限分配
-    	基于MySQL的权限控制思路
+  root((现代CI/CD实践指南))
+    CI/CD基础概念
+      持续集成、持续交付与持续部署的区别
+      DevOps与CI/CD的关系
+      价值流映射与CI/CD流水线设计
+      基础设施即代码(IaC)与CI/CD
+    主流CI/CD工具生态
+      GitHub Actions详解
+      GitLab CI/CD全面指南
+      CircleCI与云原生构建
+      Tekton与Kubernetes原生CI/CD
+      Argo CD与声明式GitOps
+    GitOps实践
+      GitOps原则与模式
+      Flux CD实战指南
+      基于Git的配置管理与版本控制
+      GitOps与多环境部署策略
+      GitOps安全最佳实践
+    容器化与Kubernetes部署
+      容器镜像构建优化策略
+      Helm Chart与应用部署
+      Kustomize定制化部署
+      金丝雀发布与蓝绿部署实现
+      Kubernetes Operator与CI/CD
+    测试自动化策略
+      测试金字塔与CI/CD集成
+      单元测试、集成测试与端到端测试
+      性能测试自动化
+      混沌工程与弹性测试
+      测试数据管理策略
+    DevSecOps实践
+      SAST与DAST工具集成
+      容器镜像安全扫描
+      依赖项漏洞检测
+      合规检查自动化
+      安全策略即代码
+    监控与可观测性
+      CI/CD流水线监控指标
+      分布式追踪与日志聚合
+      告警与通知策略
+      可视化仪表板构建
+      基于指标的自动回滚机制
+    特别章节：云原生CI/CD
+      Serverless CI/CD架构
+      多云CI/CD策略
+      微服务CI/CD模式
+      服务网格与CI/CD集成
+      边缘计算CI/CD挑战与解决方案
 ```
 
 ## 基础
