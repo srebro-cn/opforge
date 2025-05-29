@@ -1,0 +1,21 @@
+services:
+  mintlify-docs:
+    container_name: mintlify-docs
+    image: docker.cnb.cool/srebro/pidin/mintlify-docs
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    # 增加内存限制
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
+    networks:
+      - mintlify-net
+
+# 定义网络
+networks:
+  mintlify-net:
+    driver: bridge
