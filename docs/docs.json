@@ -16,9 +16,7 @@
           {
             "group": "Get Started",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "index"
             ]
           },
           {
@@ -33,7 +31,7 @@
                 ]
               },
               {
-                "group": "全链路监控系统建设",
+                "group": "全链路监控+日志收集系统建设",
                 "icon": "tag",
                 "pages": [
                   "prometheus/01",
@@ -75,8 +73,8 @@
     ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "logo/light.webp",
+    "dark": "logo/dark.webp"
   },
   "footer": {
     "socials": {
