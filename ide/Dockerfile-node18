@@ -1,0 +1,62 @@
+# .ide/Dockerfile
+# 可根据需要指定基础镜像
+FROM node:18
+
+LABEL maintainer srebro
+
+# 设置软件源(apt-get 源)
+RUN sed -Ei "s/(deb|security).debian.org/mirrors.cloud.tencent.com/g" /etc/apt/sources.list.d/debian.sources
+
+# 安装常用工具软件
+RUN apt-get update && apt-get install -y git git-lfs jq vim netcat-openbsd wget openssh-server psmisc g++ gcc lrzsz telnet net-tools cifs-utils ntpdate bash-completion sysstat iotop iftop htop unzip tar nmap bc dnsutils nethogs nfs-common htop unzip tar nmap bc nethogs \
+  && rm -rf /var/lib/apt/lists/*
+
+# 安装 code-server 和 vscode 常用插件
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+# 改用vscode插件市场
+COPY .ide/market.json /tmp/market.json
+RUN jq -s '.[0] * .[1]' /tmp/market.json /usr/lib/code-server/lib/vscode/product.json >/tmp/temp.json && cat /tmp/temp.json>/usr/lib/code-server/lib/vscode/product.json
+RUN code-server --install-extension redhat.vscode-yaml \
+&& code-server --install-extension dbaeumer.vscode-eslint \
+&& code-server --install-extension eamodio.gitlens \
+&& code-server --install-extension tencent-cloud.coding-copilot \
+&& code-server --install-extension davidanson.vscode-markdownlint \
+&& echo done
+
+
+  # 设置npm镜像源
+RUN npm config set registry https://mirrors.cloud.tencent.com/npm/
+
+# 安装pnpm
+RUN npm install -g pnpm
+
+# 安装dufs
+RUN wget https://github.com/sigoden/dufs/releases/download/v0.43.0/dufs-v0.43.0-x86_64-unknown-linux-musl.tar.gz \
+&& tar -zxvf dufs-v0.43.0-x86_64-unknown-linux-musl.tar.gz -C /usr/local/bin \
+&& chmod +x /usr/local/bin/dufs \
+&& rm -rf dufs-v0.43.0-x86_64-unknown-linux-musl.tar.gz
+
+# 设置alias docker-compose='docker compose'
+RUN echo "alias docker-compose='docker compose'" >> ~/.bashrc
+RUN echo "alias ll='ls -l'" >> ~/.bashrc
+
+
+# 复制 vscode 自定义到容器中
+COPY .ide/settings.json /root/.vscode-server/data/Machine/settings.json
+COPY .ide/settings.json /root/.local/share/code-server/Machine/settings.json
+
+# 指定字符集支持命令行输入中文（根据需要选择字符集）
+ENV LANG C.UTF-8
+ENV LANGUAGE C.UTF-8
+
+
+# 创建工作目录
+RUN mkdir -p /workspace
+
+# 创建dufs启动脚本
+RUN echo '#!/bin/bash\n\
+nohup /usr/local/bin/dufs -p 50000 -A --hidden .git,.DS_Store,tmp /workspace > /dev/null 2>&1 & \n\
+' > /etc/profile.d/start-dufs.sh && chmod +x /etc/profile.d/start-dufs.sh
+
+# 设置工作目录
+WORKDIR /workspace
