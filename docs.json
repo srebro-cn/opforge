@@ -63,11 +63,5 @@
   "logo": {
     "light": "logo/light.webp",
     "dark": "logo/dark.webp"
-  },
-  "footer": {
-    "socials": {
-      "github": "https://github.com/srebro-cn/docs",
-      "website": "https://cnb.cool/srebro/opforge"
-    }
   }
 }
