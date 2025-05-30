@@ -24,7 +24,6 @@
             "pages": [
               {
                 "group": "企业级自动化部署平台搭建",
-                "icon": "robot",
                 "pages": [
                   "cicd/01",
                   "cicd/02"
@@ -32,15 +31,13 @@
               },
               {
                 "group": "全链路监控+日志收集系统建设",
-                "icon": "tag",
                 "pages": [
                   "prometheus/01",
                   "prometheus/02"
                 ]
               },
               {
-                "group": "K8S容器化改造与CI/CD流程优化",
-                "icon": "square-terminal",
+                "group": "K8S容器化改造与CI/CD流程优化",,
                 "pages": [
                   "k8s-cicd/01",
                   "k8s-cicd/02"
@@ -48,7 +45,6 @@
               },
               {
                 "group": "CMDB资产管理平台",
-                "icon": "calendar-days",
                 "pages": [
                   "cmdb/01",
                   "cmdb/02"
