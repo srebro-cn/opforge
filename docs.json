@@ -59,5 +59,10 @@
   "logo": {
     "light": "logo/light.webp",
     "dark": "logo/dark.webp"
+  },
+  "style": {
+    "css": [
+      "/styles/katex.min.css"
+    ]
   }
 }
