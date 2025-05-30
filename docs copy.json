@@ -62,8 +62,7 @@
   },
   "style": {
     "css": [
-      "/styles/katex.min.css",
-      "/styles/iconfont.css"
+      "/styles/katex.min.css"
     ]
   }
 }
