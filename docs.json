@@ -37,7 +37,7 @@
                 ]
               },
               {
-                "group": "K8S容器化改造与CI/CD流程优化",,
+                "group": "K8S容器化改造与CI/CD流程优化",
                 "pages": [
                   "k8s-cicd/01",
                   "k8s-cicd/02"
