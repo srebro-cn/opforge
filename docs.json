@@ -26,8 +26,7 @@
               {
                 "group": "企业级自动化部署平台搭建",
                 "pages": [
-                  "cicd/01",
-                  "cicd/02"
+                  "cicd/01"
                 ]
               },
               {
@@ -40,15 +39,13 @@
               {
                 "group": "K8S容器化改造与CI/CD流程优化",
                 "pages": [
-                  "k8s-cicd/01",
-                  "k8s-cicd/02"
+                  "k8s-cicd/01"
                 ]
               },
               {
                 "group": "CMDB资产管理平台",
                 "pages": [
-                  "cmdb/01",
-                  "cmdb/02"
+                  "cmdb/01"            
                 ]
               }           
             ]
