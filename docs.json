@@ -17,7 +17,8 @@
           {
             "group": "Get Started",
             "pages": [
-              "index"
+              "index",
+              "about"
             ]
           },
           {
@@ -59,18 +60,5 @@
   "logo": {
     "light": "logo/light.webp",
     "dark": "logo/dark.webp"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "关于作者",
-        "href": "https://srebro.cn/about"
-      }
-    ]
-  },
-  "footer": {
-    "socials": {
-      "github": "https://github.com/srebro-cn/opforge"
-    }
   }
 }
