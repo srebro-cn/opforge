@@ -244,17 +244,6 @@ description: 'Ansible + jenkins + Library'
 4. **高可用性**：K8s集群+ArgoCD实现应用自愈，故障自动恢复。
 
 **技术栈全景**：
-
-```
-graph TB
-  CNB --> Jenkins
-  Jenkins --> Ansible[物理机/虚拟机]
-  Jenkins --> ArgoCD[K8s集群]
-  Jenkins --> SharedLib[共享库]
-  Jenkins --> Runner[多环境构建]
-  Jenkins --> SonarQube[代码扫描]
-  Jenkins --> Docker[镜像构建]
-```
-
+![](https://s3api.srebro.cn:443/picgo/202506021106459.png)
 
 ## https://pig4cloud.com/ 微服务项目-Pig
