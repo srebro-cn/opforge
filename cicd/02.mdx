@@ -3,16 +3,10 @@ title: '🕹️ CI/CD工具选型分析'
 description: '主流CI/CD工具对比分析'
 ---
 
-<img
-  className="block dark:hidden"
-  src="https://s3api.srebro.cn:443/picgo/202506021434811.png"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="https://s3api.srebro.cn:443/picgo/202506021434811.png"
-  alt="Hero Dark"
-/>
+<a href="https://www.jenkins.io/" target="_blank">
+  <img height="200" noZoom src="https://s3api.srebro.cn:443/picgo/202506021434811.png" />
+</a>
+
 
 
 #### **一、主流CI/CD工具对比分析**
@@ -78,7 +72,7 @@ description: '主流CI/CD工具对比分析'
 
 2. **流水线设计**
 
-   ```
+   ```groovy Jenkinsfile
    pipeline {
      agent any
      stages {
