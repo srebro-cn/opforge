@@ -1,7 +1,8 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "OpForg",
+  "description": "Ops=运维，Forge=锻造/知识沉淀",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
