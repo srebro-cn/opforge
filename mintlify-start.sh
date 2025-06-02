@@ -1,1 +1,0 @@
-nohup mint dev --host 0.0.0.0 --no-open > /dev/null 2>&1 &
