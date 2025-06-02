@@ -23,7 +23,6 @@ description: '这是一个大纲'
 点击这里，查看CI/CD工具选型分析介绍 🔎
 </Card>
 
-------
 
 
 
@@ -50,7 +49,7 @@ description: '这是一个大纲'
    - **多Master节点**：通过Nginx负载均衡实现故障转移。
    - **Agent自动注册**：基于标签动态分配任务（如`docker-build`、`k8s-deploy`）。
 
-------
+
 
 #### **3. Jenkins共享库设计与应用**
 
@@ -72,7 +71,7 @@ description: '这是一个大纲'
   - **跨项目复用**：通过`@Library('shared-lib@main')`引入共享库，减少代码冗余。
   - **版本控制**：结合Git分支管理共享库迭代，支持灰度发布回滚。
 
-------
+
 
 #### **4. Jenkins+Ansible批量发布与回退**
 
@@ -129,7 +128,7 @@ flowchart LR
   - **版本快照**：通过Ansible备份历史版本，支持一键回滚至指定时间点。
   - **元数据管理**：记录每次发布的版本号、变更内容，便于追溯。
 
-------
+
 
 #### **5. Jenkins Runner模式与多环境构建**
 
@@ -161,7 +160,7 @@ flowchart LR
 
 - **隔离性保障**：通过Docker容器实现环境隔离，避免依赖冲突。
 
-------
+
 
 #### **6. Jenkins+ArgoCD实现K8S GitOps发布**
 
@@ -197,7 +196,7 @@ flowchart LR
   - **Git历史回滚**：通过`git checkout <commit>`回退代码，ArgoCD自动同步。
   - **紧急回滚**：使用`argocd app rollback myapp --to-revision <revision>`。
 
-------
+
 
 #### **7. 代码质量与安全扫描**
 
@@ -219,7 +218,7 @@ flowchart LR
   - **工具选择**：Trivy、Clair、Anchore。
   - **流水线集成**：在构建阶段扫描镜像漏洞，阻断高风险制品。
 
-------
+
 
 #### **8. 流水线优化策略**
 
@@ -241,7 +240,7 @@ flowchart LR
   - **依赖缓存**：利用Jenkins Pipeline缓存Maven/NPM仓库。
   - **镜像层缓存**：Dockerfile中合理分层，减少重复构建。
 
-------
+
 
 #### **9. 其他关键模块**
 
@@ -255,7 +254,6 @@ flowchart LR
   - **多活部署**：在不同云服务商部署Jenkins集群，通过DNS切换实现故障转移。
   - **定期备份**：备份Jenkins配置、共享库、Ansible Playbook。
 
-------
 
 ### 🚢**最终实现效果**
 

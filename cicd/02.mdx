@@ -31,7 +31,7 @@ description: '主流CI/CD工具对比分析'
 | **高并发与执行效率** | 分布式架构支持千级并发，通过 **Throttle Plugin** 限制资源争用，构建速度可线性扩展。 | 默认单节点Runner并发有限，需自建Runner集群，大规模场景下性能衰减明显。 | 依赖阿里云ACK（Kubernetes）弹性调度，但冷启动时间较长，突发流量下易出现排队延迟。 |
 | **全流程打通**       | 通过 **Pipeline as Code** 定义端到端流程，支持与Jira、SonarQube等工具深度集成。 | 内置GitLab Issues、Merge Request联动，但第三方工具集成需开发适配层。 | 与阿里云效需求管理、测试服务等无缝衔接，但非阿里云工具链（如GitHub）需额外配置。 |
 
-------
+
 
 #### **二、选择Jenkins的强势理由**
 
@@ -67,7 +67,7 @@ description: '主流CI/CD工具对比分析'
 - **合规性插件**：集成 **OWASP Dependency-Check** 检测依赖漏洞，满足金融、政务等行业安全规范。
 - **灾备方案**：支持Master节点高可用（HA）部署，结合 **Jenkins Backup Plugin** 定期备份配置，确保业务连续性。
 
-------
+
 
 #### **三、实施建议**
 
@@ -112,7 +112,7 @@ description: '主流CI/CD工具对比分析'
    - 部署 **Prometheus + Grafana** 监控Jenkins集群状态，设置告警规则（如构建队列积压超过阈值）。
    - 使用 **Jenkins Configuration-as-Code** 插件实现配置版本化管理，避免人为误操作。
 
-------
+
 
 #### **四、总结**
 
