@@ -1,7 +1,7 @@
 main:
   push:
     - runner:
-        cpus: 8
+        cpus: 32
       services:
         - docker
         - git-clone-yyds
