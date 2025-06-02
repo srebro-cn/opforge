@@ -63,18 +63,14 @@
   "navbar": {
     "links": [
       {
-        "label": "Demo Site",
-        "href": "https://demo.blinko.space"
+        "label": "关于作者",
+        "href": "https://srebro.cn/about"
       }
-    ],
-    "primary": {
-      "type": "github",
-      "href": "https://github.com/blinko-space/blinko"
-    }
+    ]
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/blinko-space"
+      "github": "https://github.com/srebro-cn/opforge"
     }
   }
 }
