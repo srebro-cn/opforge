@@ -257,37 +257,8 @@ flowchart LR
 4. **高可用性**：K8s集群+ArgoCD实现应用自愈，故障自动恢复。
 
 **技术栈全景**：
+
 ![](https://s3api.srebro.cn:443/picgo/202506021106459.png)
-
-```mermaid
-flowchart LR
-    subgraph Deployment Orchestration
-        direction TB
-        CNB["CNB代码库"] --> Jenkins[CI/CD平台]
-        Jenkins --> Ansible[Ansible集群]
-        Jenkins --> ArgoCD["ArgoCD GitOps"]
-    end
-
-    subgraph Build & Integration
-        direction TB
-        SharedLib["共享库"] --> Jenkins
-        Runner["Runner节点池"] --> Jenkins
-    end
-
-    subgraph Quality Gate
-        direction TB
-        SonarQube["SonarQube"] --> Jenkins
-        Docker["镜像仓库"] --> Jenkins
-    end
-
-    %% 跨子图连接样式
-    Jenkins -.->|并行执行| Ansible
-    Jenkins -.->|并行执行| ArgoCD
-    Jenkins -.->|异步通知| SonarQube
-    Jenkins -.->|构建产物| Docker
-    Runner -.->|环境隔离| Ansible
-    SharedLib -.->|代码复用| Runner
-```
 
 ### 📚**参考资料**
 - https://pig4cloud.com/ 微服务项目-Pig
