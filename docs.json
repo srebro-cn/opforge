@@ -59,5 +59,22 @@
   "logo": {
     "light": "logo/light.webp",
     "dark": "logo/dark.webp"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Demo Site",
+        "href": "https://demo.blinko.space"
+      }
+    ],
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/blinko-space/blinko"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/blinko-space"
+    }
   }
 }
