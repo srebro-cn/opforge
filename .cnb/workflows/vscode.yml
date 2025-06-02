@@ -4,7 +4,7 @@ $:
         image: docker.cnb.cool/sre/custom-vscode/node-20-opforge:latest
         #image: cnbcool/default-dev-env:latest
       runner:
-        cpus: 8
+        cpus: 16
       services:
         - vscode
         - docker
