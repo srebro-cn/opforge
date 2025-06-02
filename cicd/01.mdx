@@ -36,7 +36,7 @@ description: '这是一个大纲'
 
 2. **安装与配置**
 
-   ```
+   ```bash jenkins-run.sh
    # Docker部署示例
    docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
    ```
@@ -110,8 +110,7 @@ flowchart LR
 
 - Ansible Playbook示例
 
-  ```
-  # deploy.yml
+  ```yaml deploy.yaml
   - hosts: "{{ target }}"
     tasks:
       - name: 备份当前版本
@@ -142,8 +141,7 @@ flowchart LR
 
 - **配置示例**
 
-  ```
-  // Jenkinsfile
+  ```groovy Jenkinsfile
   pipeline {
     agent {
       label 'nodejs-18'  // 根据环境选择Runner
@@ -165,10 +163,9 @@ flowchart LR
 #### **6. Jenkins+ArgoCD实现K8S GitOps发布**
 
 - **ArgoCD配置流程**
-
   1. 定义Application资源
 
-     ```
+     ```yaml myapp.yaml
      apiVersion: argoproj.io/v1alpha1
      kind: Application
      metadata:
@@ -185,9 +182,7 @@ flowchart LR
        syncPolicy:
          automated: {}  # 自动同步
      ```
-
   2. 同步策略
-
      - **自动同步**：Git变更自动触发K8s资源更新。
      - **手动同步**：需审批后执行，适用于生产环境。
 
@@ -202,8 +197,7 @@ flowchart LR
 
 - SonarQube集成
 
-  ```
-  // Jenkinsfile
+  ```groovy Jenkinsfile
   stage('SonarQube Scan') {
     steps {
       withSonarQubeEnv('SonarQube') {
@@ -229,7 +223,7 @@ flowchart LR
 
 - 参数化构建
 
-  ```
+  ```groovy Jenkinsfile
   parameters {
     choice(name: 'ENV', choices: ['dev', 'pre', 'prod'], description: '部署环境')
   }
