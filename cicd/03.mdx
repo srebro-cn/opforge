@@ -281,3 +281,25 @@ Jenkins启动之后，可以看到端口监听在 8080，浏览器访问如下�
 ![](https://s3api.srebro.cn:443/picgo/202506031806821.png)
 ![](https://s3api.srebro.cn:443/picgo/202506031806818.png)
 <Check>至此Jenkins初始化完成✅</Check>
+
+
+# 五、使用Nginx反向代理访问Jenkins
+
+## 5.1 安装Nginx
+
+```bash
+yum install nginx -y
+```
+
+## 5.2 配置Nginx
+
+```bash
+vim /etc/nginx/nginx.conf
+```
+
+```bash
+user  nginx;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log
+```
