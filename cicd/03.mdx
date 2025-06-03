@@ -7,12 +7,12 @@ description: '部署说明'
   <img height="200" noZoom src="https://s3api.srebro.cn:443/picgo/202506021434811.png" />
 </a>
 
-#### 一、Jenkins核心部署流程
+# 一、Jenkins核心部署流程
 
-##### Jenkins是什么
+## 1.1 Jenkins是什么
 Jenkins 是一个开源的自动化服务器，主要用于持续集成和持续部署（CI/CD）。 它由Java编写，因此它可以在Windows、Linux和macOS等大多数操作系统上运行。 Jenkins 提供了一个易于使用的web界面，通过插件支持来扩展其功能，使得它可以与各种流行的开发工具和技术无缝集成，比如Git、Maven、Docker等。
 
-##### 主要功能
+## 1.2 Jenkins功能
 
 - 持续集成（CI）：Jenkins 可以监控版本控制系统中的变化，并自动进行构建、测试，确保代码的质量和稳定性。这有助于开发团队更快地发现和解决问题。
 - 持续部署（CD）：当代码通过所有测试后，Jenkins 可以自动部署到一台或多台服务器上，实现从代码提交到产品交付的自动化流程。
@@ -20,7 +20,7 @@ Jenkins 是一个开源的自动化服务器，主要用于持续集成和持续
 - 插件扩展：Jenkins 拥有庞大的插件生态，可以通过安装插件来扩展其功能，满足不同用户的需求。
 - Master-Slave架构：Jenkins 支持 Master-Slave 架构，Master 负责调度构建任务，Slave 负责执行这些任务。这种架构允许分布式构建，提高了资源利用率和构建效率。
 
-##### 使用场景
+## 1.3 Jenkins使用场景
 
 - 自动化测试：自动执行单元测试、集成测试等，快速反馈测试结果。
 - 编译和构建：自动化编译和构建过程，保障代码的可构建性和一致性。
@@ -28,7 +28,7 @@ Jenkins 是一个开源的自动化服务器，主要用于持续集成和持续
 - 环境管理：自动化管理（如创建、销毁）开发和测试环境，提高资源使用效率。
 - 任务调度：定时执行特定任务，如数据库备份、清理日志等。
 
-##### Jenkins特点
+## 1.4 Jenkins特点
 
 - 开源免费：Jenkins是一个开源软件，并且免费提供给用户使用。
 - 可扩展性：Jenkins提供了丰富的插件和扩展，可以满足各种不同的需求。
@@ -40,7 +40,7 @@ Jenkins 是一个开源的自动化服务器，主要用于持续集成和持续
 - 支持分布式构建：Jenkins支持分布式构建，可以将任务分配给多个节点进行并行构建，提高构建速度。
 - 支持持续集成和持续交付：Jenkins支持持续集成和持续交付，可以将代码快速地交付给用户，提高软件交付速度。
 
-#### 二、Jenkins发展
+# 二、Jenkins发展
 
 <Steps>
   <Step title="Hudson阶段：">
@@ -60,9 +60,9 @@ Jenkins Pipeline是Jenkins 2.Jenkins X是Jenkins社区推出的一个新项目�
   </Step>
 </Steps>
 
-#### 三、Jenkins安装
+# 三、Jenkins安装
 
-##### 下载jenkins
+## 3.1 下载jenkins
 Jenkins提供了多种部署方式，用户可以根据自己的需求选择合适的版本：
 
 - 官方网站下载：访问 [Jenkins官网](https://www.jenkins.io/download/) 下载最新版本
@@ -73,110 +73,189 @@ Jenkins提供了多种部署方式，用户可以根据自己的需求选择合�
 
 
 
-##### jenkins推荐硬件配置
+## 3.2 Jenkins推荐配置
 - CPU内存：8C16G
 - 存储空间： 100G 系统盘 + 1T 数据盘
 - 系统： OpenEuler22.03 LTS SP4
+- jdk: openjdk17及以上
+![](https://s3api.srebro.cn:443/picgo/202506031357872.png)
 
 <Tip> 数据盘挂载到`/home/application` 目录下</Tip>
-<Tip> `JENKINS_HOME`定义在`/home/application/.jenkins` 目录下 </Tip>
+<Tip> `JENKINS_HOME`定义在`/home/application/jenkins` 目录下 </Tip>
 
 
-##### jenkins几种部署方式
+## 3.3 Jenkins常见几种部署方式
 
-- 基于OpenEuler系统，使用RPM包部署
-  ```bash
-  # 添加Jenkins源
-  sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-  sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+### 3.3.1 基于Linux系统
+<Note>这里Linux系统指的是: OpenEuler 22.03 LTS SP4</Note>
 
-  # 安装Jenkins依赖
-  sudo yum install fontconfig java-21-openjdk
+```bash
+# 添加Jenkins源
+wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
 
-  # 安装Jenkins
-  sudo yum install jenkins
+# 安装openjdk21
+yum install fontconfig java-21-openjdk
 
-  # 创建jenkins工作目录，并授权目前权限
-    sudo mkdir -p /home/application/.jenkins
-    sudo chown -R jenkins:jenkins /home/application/.jenkins
+# 安装Jenkins
+yum install jenkins
 
-  # 修改jenkins 配置文件，定义JENKINS_HOME
-    sudo sed -i \
-      -e 's|^Environment="JENKINS_HOME=/var/lib/jenkins"|Environment="JENKINS_HOME=/home/application/.jenkins"|' \
-      -e 's|^WorkingDirectory=/var/lib/jenkins|WorkingDirectory=/home/application/.jenkins|' \
-      /usr/lib/systemd/system/jenkins.service
+# 创建jenkins工作目录，并授权目前权限
+mkdir -p /home/application/jenkins
+chown -R jenkins:jenkins /home/application/jenkins
 
-  # 启动Jenkins服务
-  sudo systemctl daemon-reload
-  sudo systemctl enable jenkins
-  sudo systemctl start jenkins
+# 修改jenkins 配置文件，定义JENKINS_HOME
+sed -i \
+-e 's|^Environment="JENKINS_HOME=/var/lib/jenkins"|Environment="JENKINS_HOME=/home/application/jenkins"|' \
+-e 's|^WorkingDirectory=/var/lib/jenkins|WorkingDirectory=/home/application/jenkins|' \
+/usr/lib/systemd/system/jenkins.service
 
-  # 验证服务
-  ps -ef | grep jenkins
-  jenkins  2712534       1 57 12:22 ?        00:00:31 /usr/bin/java -Djava.awt.headless=true -jar /usr/share/java/jenkins.war --webroot=/var/cache/jenkins/war --httpPort=8080
-  root     2712768 2696925  0 12:23 pts/0    00:00:00 grep --color=auto jenkins
+# 启动Jenkins服务
+systemctl daemon-reload
+systemctl enable jenkins
+systemctl start jenkins
 
-  netstat -ntlup | grep 8080
-  tcp6       0      0 :::8080                 :::*                    LISTEN      2712534/java  
-  ```
+# 查看Jenkins服务状态
+ps -ef | grep jenkins
+jenkins  2712534       1 57 12:22 ?        00:00:31 /usr/bin/java -Djava.awt.headless=true -jar /usr/share/java/jenkins.war --webroot=/var/cache/jenkins/war --httpPort=8080
+root     2712768 2696925  0 12:23 pts/0    00:00:00 grep --color=auto jenkins
 
-- 基于WAR包部署，jdk方式
-  ```bash
-  # 1. 确保已安装JDK 11或更高版本
-  java -version
-  
-  # 2. 下载Jenkins WAR包
-  wget https://get.jenkins.io/war-stable/latest/jenkins.war
-  
-  # 3. 修改Jenkins配置文件中的JENKINS_HOME路径
-  # JENKINS_HOME是Jenkins的工作目录，包含所有配置、作业和插件数据
-  # 将其修改到/home/application/.jenkins可以更好地管理权限和备份
-  sudo sed -i 's|Environment="JENKINS_HOME=/var/lib/jenkins"|Environment="JENKINS_HOME=/home/application/.jenkins"|g; s|WorkingDirectory=/var/lib/jenkins|WorkingDirectory=/home/application/.jenkins|g' /usr/lib/systemd/system/jenkins.service
-  
-  # 4. 重新加载systemd配置
-  sudo systemctl daemon-reload
-  
-  # 5. 运行Jenkins
-  java -jar jenkins.war --httpPort=8080
+netstat -ntlup | grep 8080
+tcp6       0      0 :::8080                 :::*                    LISTEN      2712534/java  
 ```
 
-- 基于docker 容器部署方式
-  ```bash
-  # 拉取Jenkins镜像
-  docker pull jenkins/jenkins:lts
-  
-  # 运行Jenkins容器
-  docker run -d \
-    -p 8080:8080 \
-    -p 50000:50000 \
-    -v jenkins_home:/var/jenkins_home \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    --name jenkins \
-    jenkins/jenkins:lts
-  ```
+### 3.3.2 基于War包部署，jdk方式
+```bash
+# 安装openjdk17
+wget https://mirrors.nju.edu.cn/openjdk/17.0.2/openjdk-17.0.2_linux-x64_bin.tar.gz
 
-##### 推荐使用宿主机，war包部署方式
+# 解压jdk17
+tar -zxvf openjdk-17.0.2_linux-x64_bin.tar.gz -C /home/application/
 
-WAR包部署方式具有以下优势：
+# 配置环境变量
+echo "export JAVA_HOME=/home/application/jdk-17.0.2" >> /etc/profile
+echo "export PATH=$JAVA_HOME/bin:$PATH" >> /etc/profile
+echo "export CLASSPATH=.:$JAVA_HOME/lib" >> /etc/profile
+source /etc/profile
 
-1. 灵活性高
-   - 可以自由选择JDK版本
-   - 便于自定义Jenkins参数
-   - 方便进行版本升级和回滚
+# 验证jdk
+java -version
+openjdk version "17.0.2" 2022-01-18
+OpenJDK Runtime Environment (build 17.0.2+8-86)
+OpenJDK 64-Bit Server VM (build 17.0.2+8-86, mixed mode, sharing)
 
-2. 资源利用效率
-   - 直接运行在宿主机上，无容器开销
-   - 更好的性能表现
-   - 更容易进行系统级优化
+# 创建jenkins工作目录
+mkdir -p /home/application/jenkins
 
-3. 维护简便
-   - 配置文件直接存储在文件系统
-   - 日志管理更直观
-   - 故障排查更方便
+# 下载Jenkins LTS 最新war包,2.504.2
+wget https://mirrors.nju.edu.cn/jenkins/war-stable/2.504.2/jenkins.war
+mv jenkins.war /home/application/jenkins/jenkins.war
 
-4. 注意事项
-   - 确保系统已安装JDK 11或更高版本
-   - 建议配置Jenkins系统服务实现开机自启
+# 使用systemd管理jenkins
+cat > /etc/systemd/system/jenkins.service <<EOF
+[Unit]
+Description=Jenkins
+After=network.target
+
+[Service]
+User=root
+Environment="JENKINS_HOME=/home/application/jenkins"
+ExecStart=/home/application/jdk-17.0.2/bin/java -jar /home/application/jenkins/jenkins.war -Djava.awt.headless=true --httpPort=8080
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# 启动Jenkins服务
+systemctl daemon-reload
+systemctl enable jenkins
+systemctl start jenkins
+
+# 查看Jenkins服务状态
+ps -ef | grep jenkins
+root     2714521       1 96 14:15 ?        00:00:34 /home/application/jdk-17.0.2/bin/java -jar /home/application/jenkins/jenkins.war -Djava.awt.headless=true --httpPort=8080
+root     2714741 2697017  0 14:16 pts/1    00:00:00 grep --color=auto jenkins
+
+netstat -ntlup | grep 8080
+tcp6       0      0 :::8080                 :::*                    LISTEN      2714521/java  
+```
+
+### 3.3.3 基于Docker 容器部署方式
+```bash
+# 安装docker【安装过程省略,可参考https://doc.srebro.cn/home/docker/docker-install】
+
+# 创建docker 网络
+docker network create jenkins
+
+# 创建jenkins工作目录
+mkdir -p /home/application/jenkins
+
+# 运行Jenkins容器
+docker run -itd \
+--name jenkins \
+--restart always \
+--privileged  \
+--network jenkins \
+-u root \
+-p 8080:8080 \
+-p 50000:50000 \
+-e TZ=Asia/Shanghai \
+-v /usr/bin/docker:/usr/bin/docker \
+-v /usr/bin/docker-compose:/usr/bin/docker-compose \
+-v /home/application/jenkins:/var/jenkins_home \
+-v /var/run/docker.sock:/var/run/docker.sock \
+jenkins/jenkins:2.504.2-lts-jdk17
+```
+
+
+
+## 3.4 推荐使用宿主机，War包部署方式
+<Tip>以下是三种部署方式的对比分析：</Tip>
+
+| 部署方式 | 优点 | 缺点 | 适用场景 |
+|---------|------|------|----------|
+| RPM/DEB包部署 | • 系统级安装，便于管理<br/>• 自动处理依赖关系<br/>• 系统服务集成度高 | • 版本更新受限于包管理器<br/>• 配置文件分散在系统各处<br/>• 不同Linux发行版需要不同包 | 标准化的生产环境，<br/>需要系统级集成 |
+| Docker容器部署 | • 环境隔离性好<br/>• 快速部署和迁移<br/>• 版本管理方便 | • 需要维护容器环境<br/>• 存在容器网络开销<br/>• 宿主机资源利用率较低<br/>• 数据持久化问题| 开发测试环境，<br/>需要快速部署和清理 |
+| War包部署（推荐👍）| • 完全可控的JVM环境<br/>• 直接访问系统资源，性能最优<br/>• 配置集中，便于管理<br/>• 最小化依赖，稳定性好<br/>• 升级方便，只需替换war包<br/>• 便于问题排查和性能调优 | • 需要手动安装JDK<br/>• 初始部署步骤相对较多 | 生产环境，<br/>对性能和稳定性要求高 |
+
+### 3.4.1 为什么宿主机，War包部署？
+
+1. **性能优势**
+   - 直接运行在宿主机JVM上，无额外开销
+   - 直接使用宿主机资源，无虚拟化开销
+   - 避免容器层带来的IO性能损耗
+
+2. **维护便利**
+   - 配置文件集中在JENKINS_HOME目录
+   - 👍日志直接写入宿主机，便于收集和分析
+   - 👍方便登录机器查看构建产物，DEBUG问题
+   - 👍升级Jenkins版本时，备份数据，替换旧版本WAR包即可
+
+### 3.4.2 最佳实践建议
+
+1. **标准化部署流程**
+   - 使用systemd管理Jenkins服务，确保开机自启动
+   - 统一存储目录规范，建议使用`/home/application/jenkins`
+   - 选择LTS版本的Jenkins War包，保证稳定性
+
+2. **性能优化配置**
+   ```bash
+   # 建议的JVM参数配置
+   JAVA_OPTS="-Xmx4g -Xms4g -XX:+UseG1GC -XX:+ExplicitGCInvokesConcurrent -Djava.awt.headless=true"
+   ```
+
+3. **备份策略**
    - 定期备份JENKINS_HOME目录
-   - 合理规划磁盘空间，预留足够容量
-   - 注意文件系统权限设置
+   - 将备份文件存储在独立存储系统
+   - 制定完整的备份恢复预案
+
+4. **监控方案**
+   - 配置JMX监控，实时掌握JVM状态
+   - 使用Prometheus + Grafana构建监控面板
+   - 设置关键指标告警阈值
+
+<Note>
+使用War包部署方式不仅简化了Jenkins的运维工作，还为后续的性能优化和问题排查提供了最大的灵活性。特别是在大规模CI/CD场景下，稳定性和性能的重要性更加凸显。
+</Note>
