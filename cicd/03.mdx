@@ -7,12 +7,12 @@ description: '部署说明'
   <img height="200" noZoom src="https://s3api.srebro.cn:443/picgo/202506021434811.png" />
 </a>
 
-#### **一、Jenkins核心部署流程**
+#### 一、Jenkins核心部署流程
 
-##### **Jenkins是什么**
+##### Jenkins是什么
 Jenkins 是一个开源的自动化服务器，主要用于持续集成和持续部署（CI/CD）。 它由Java编写，因此它可以在Windows、Linux和macOS等大多数操作系统上运行。 Jenkins 提供了一个易于使用的web界面，通过插件支持来扩展其功能，使得它可以与各种流行的开发工具和技术无缝集成，比如Git、Maven、Docker等。
 
-##### **主要功能**
+##### 主要功能
 
 - 持续集成（CI）：Jenkins 可以监控版本控制系统中的变化，并自动进行构建、测试，确保代码的质量和稳定性。这有助于开发团队更快地发现和解决问题。
 - 持续部署（CD）：当代码通过所有测试后，Jenkins 可以自动部署到一台或多台服务器上，实现从代码提交到产品交付的自动化流程。
@@ -20,7 +20,7 @@ Jenkins 是一个开源的自动化服务器，主要用于持续集成和持续
 - 插件扩展：Jenkins 拥有庞大的插件生态，可以通过安装插件来扩展其功能，满足不同用户的需求。
 - Master-Slave架构：Jenkins 支持 Master-Slave 架构，Master 负责调度构建任务，Slave 负责执行这些任务。这种架构允许分布式构建，提高了资源利用率和构建效率。
 
-##### **使用场景**
+##### 使用场景
 
 - 自动化测试：自动执行单元测试、集成测试等，快速反馈测试结果。
 - 编译和构建：自动化编译和构建过程，保障代码的可构建性和一致性。
@@ -28,7 +28,7 @@ Jenkins 是一个开源的自动化服务器，主要用于持续集成和持续
 - 环境管理：自动化管理（如创建、销毁）开发和测试环境，提高资源使用效率。
 - 任务调度：定时执行特定任务，如数据库备份、清理日志等。
 
-##### **Jenkins特点**
+##### Jenkins特点
 
 - 开源免费：Jenkins是一个开源软件，并且免费提供给用户使用。
 - 可扩展性：Jenkins提供了丰富的插件和扩展，可以满足各种不同的需求。
@@ -40,7 +40,7 @@ Jenkins 是一个开源的自动化服务器，主要用于持续集成和持续
 - 支持分布式构建：Jenkins支持分布式构建，可以将任务分配给多个节点进行并行构建，提高构建速度。
 - 支持持续集成和持续交付：Jenkins支持持续集成和持续交付，可以将代码快速地交付给用户，提高软件交付速度。
 
-#### **二、Jenkins发展**
+#### 二、Jenkins发展
 
 <Steps>
   <Step title="Hudson阶段：">
@@ -60,31 +60,31 @@ Jenkins Pipeline是Jenkins 2.Jenkins X是Jenkins社区推出的一个新项目�
   </Step>
 </Steps>
 
-#### **三、Jenkins安装**
+#### 三、Jenkins安装
 
-##### **下载jenkins**
+##### 下载jenkins
 Jenkins提供了多种部署方式，用户可以根据自己的需求选择合适的版本：
 
-- **官方网站下载**：访问 [Jenkins官网](https://www.jenkins.io/download/) 下载最新版本
-- **版本选择**：
+- 官方网站下载：访问 [Jenkins官网](https://www.jenkins.io/download/) 下载最新版本
+- 版本选择：
   - LTS版本：长期支持版本，稳定性好，建议生产环境使用
   - Weekly版本：每周更新版本，包含最新特性，适合开发测试环境
 ![](https://s3api.srebro.cn:443/picgo/202506031126452.png)
 
 
 
-##### **jenkins推荐硬件配置**
-- **CPU内存：8C16G**
-- **存储空间： 100G 系统盘 + 1T 数据盘**
-- **系统： OpenEuler22.03 LTS SP4**
+##### jenkins推荐硬件配置
+- CPU内存：8C16G
+- 存储空间： 100G 系统盘 + 1T 数据盘
+- 系统： OpenEuler22.03 LTS SP4
 
 <Tip> 数据盘挂载到`/home/application` 目录下</Tip>
 <Tip> `JENKINS_HOME`定义在`/home/application/.jenkins` 目录下 </Tip>
 
 
-##### **jenkins几种部署方式**
+##### jenkins几种部署方式
 
-- **基于OpenEuler系统，使用RPM包部署**
+- 基于OpenEuler系统，使用RPM包部署
   ```bash
   # 添加Jenkins源
   sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
@@ -120,7 +120,7 @@ Jenkins提供了多种部署方式，用户可以根据自己的需求选择合�
   tcp6       0      0 :::8080                 :::*                    LISTEN      2712534/java  
   ```
 
-- **基于WAR包部署，jdk方式**
+- 基于WAR包部署，jdk方式
   ```bash
   # 1. 确保已安装JDK 11或更高版本
   java -version
@@ -140,7 +140,7 @@ Jenkins提供了多种部署方式，用户可以根据自己的需求选择合�
   java -jar jenkins.war --httpPort=8080
 ```
 
-- **基于docker 容器部署方式**
+- 基于docker 容器部署方式
   ```bash
   # 拉取Jenkins镜像
   docker pull jenkins/jenkins:lts
@@ -155,26 +155,26 @@ Jenkins提供了多种部署方式，用户可以根据自己的需求选择合�
     jenkins/jenkins:lts
   ```
 
-##### **推荐使用宿主机，war包部署方式**
+##### 推荐使用宿主机，war包部署方式
 
 WAR包部署方式具有以下优势：
 
-1. **灵活性高**
+1. 灵活性高
    - 可以自由选择JDK版本
    - 便于自定义Jenkins参数
    - 方便进行版本升级和回滚
 
-2. **资源利用效率**
+2. 资源利用效率
    - 直接运行在宿主机上，无容器开销
    - 更好的性能表现
    - 更容易进行系统级优化
 
-3. **维护简便**
+3. 维护简便
    - 配置文件直接存储在文件系统
    - 日志管理更直观
    - 故障排查更方便
 
-4. **注意事项**
+4. 注意事项
    - 确保系统已安装JDK 11或更高版本
    - 建议配置Jenkins系统服务实现开机自启
    - 定期备份JENKINS_HOME目录
