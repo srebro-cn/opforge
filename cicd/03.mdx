@@ -246,21 +246,15 @@ jenkins/jenkins:2.504.2-lts-jdk17
    - 统一存储目录规范，建议使用`/home/application/jenkins`
    - 选择LTS版本的Jenkins War包，保证稳定性
 
-2. **性能优化配置**
-   ```bash
-   # 建议的JVM参数配置
-   JAVA_OPTS="-Xmx4g -Xms4g -XX:+UseG1GC -XX:+ExplicitGCInvokesConcurrent -Djava.awt.headless=true"
-   ```
-
-3. **备份策略**
+2. **备份策略**
    - 定期备份JENKINS_HOME目录
    - 将备份文件存储在独立存储系统
    - 制定完整的备份恢复预案
 
-4. **监控方案**
+3. **监控方案**
    - 配置JMX监控，实时掌握JVM状态
    - 使用Prometheus + Grafana构建监控面板
-   - 设置关键指标告警阈值
+   - 设置关键指标告警阈值，比如构建耗时、JVM内存使用情况等
 
 <Note>
 使用War包部署方式不仅简化了Jenkins的运维工作，还为后续的性能优化和问题排查提供了最大的灵活性。特别是在大规模CI/CD场景下，稳定性和性能的重要性更加凸显。
@@ -279,5 +273,11 @@ Jenkins启动之后，可以看到端口监听在 8080，浏览器访问如下�
 <Tip>选择 安装jenkins社区推荐的插件；安装过程可能会有点问题; 如果实在安装不下去，可以跳过，等进入到jenkins 设置代理地址即可</Tip>
 ![](https://s3api.srebro.cn:443/picgo/202506031656311.png)
 ![](https://s3api.srebro.cn:443/picgo/202506031802095.png)
+![](https://s3api.srebro.cn:443/picgo/202506031805137.png)
 
 ## 4.3 创建管理员账户并完成初始化设置
+![](https://s3api.srebro.cn:443/picgo/202506031805146.png)
+![](https://s3api.srebro.cn:443/picgo/202506031806460.png)
+![](https://s3api.srebro.cn:443/picgo/202506031806821.png)
+![](https://s3api.srebro.cn:443/picgo/202506031806818.png)
+<Check>至此Jenkins初始化完成✅</Check>
