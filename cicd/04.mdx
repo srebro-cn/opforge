@@ -363,8 +363,64 @@ drwxr-xr-x 3 root root      4096  6月  4 17:04 maven-status
 
 
 # 二、Jenkins插件管理
+## 2.1 Jenkins 插件是什么
+Jenkins 插件是扩展 Jenkins 核心功能的模块化组件，通过插件可集成超过 **2,383**个插件，实现持续集成/持续交付（CI/CD）全流程自动化。主要用途包括：
+- 集成版本控制系统（Git/SVN）
+- 支持构建工具（Maven/Gradle）
+- 提供可视化流水线编排（Pipeline）
+- 实现代码质量检测（SonarQube）
+- 管理容器化部署（Docker/Kubernetes）
+- 集成测试工具（JUnit/NUnit/TestNG）
+- 等等
 
-## 2.1 必备插件推荐
+## 2.2 安装插件的方式
+<Accordion title="🏋️‍♀️方式一：在线安装（推荐👍）">
+![](https://s3api.srebro.cn:443/picgo/202506041758243.png)
+1. 访问插件管理界面： `系统管理 → 管理插件 → 可用插件`
+2. 搜索目标插件（如 `Role-Based Strategy`）
+3. 勾选后点击「直接安装」或「下载待重启后安装」
+</Accordion>
+
+
+<Accordion title="🏋️方式二：手动安装（离线）">
+![](https://s3api.srebro.cn:443/picgo/202506041757984.png)
+1. 从 [Jenkins 插件官网](https://plugins.jenkins.io/) 下载 `.hpi` 文件
+2. 进入 `系统管理 → 管理插件 → 高级`
+3. 在「上传插件」处选择本地文件
+4. 点击「上传」完成安装」
+</Accordion>
+
+<Accordion title="📌其他方式：">
+1. Jenkins CLI 命令行安装（需配置 SSH 密钥）
+2. 解压插件包到 `/home/application/jenkins/plugins/` 目录
+</Accordion>
+
+
+## 2.3 在线安装插件失败，解决方案
+> 可能因为某些网络因素😑，需要咱自行配置加速源
+
+<Steps>
+  <Step title="​​关闭安全校验​​（修改 Jenkins 启动参数）">
+```bash
+# 在启动命令中添加 JVM 参数
+java -Dhudson.model.DownloadService.noSignatureCheck=true -jar jenkins.war
+```
+<Note>systemd管理的Jenkins也是同样修改方式</Note>
+![](https://s3api.srebro.cn:443/picgo/202506041807634.png)
+
+  </Step>
+
+  <Step title="替换更新站点 URL​​：">
+  ![](https://s3api.srebro.cn:443/picgo/202506041804659.png)
+-  进入 系统管理 → 系统设置
+-  修改「更新站点」URL 为镜像地址为`https://jenkins-update.davidz.cn/update-center.json`
+-  保存后重启 Jenkins
+  </Step>
+
+</Steps>
+
+
+## 必备插件推荐
 
 <Steps>
   <Step title="源代码管理">
@@ -390,102 +446,3 @@ drwxr-xr-x 3 root root      4096  6月  4 17:04 maven-status
   </Step>
 </Steps>
 
-## 2.2 插件管理操作
-
-### 2.2.1 安装插件
-1. 在线安装
-```bash
-Manage Jenkins -> Plugins -> Available plugins
-```
-
-2. 手动安装
-```bash
-Manage Jenkins -> Plugins -> Advanced settings -> Upload Plugin
-```
-
-### 2.2.2 更新插件
-<Warning>更新插件前建议先备份Jenkins配置</Warning>
-
-```bash
-Manage Jenkins -> Plugins -> Updates
-```
-
-### 2.2.3 禁用插件
-```bash
-Manage Jenkins -> Plugins -> Installed plugins -> 选择插件 -> Disable
-```
-
-## 2.3 插件配置最佳实践
-
-1. **性能优化**
-   - 只安装必要的插件
-   - 定期清理未使用的插件
-   - 及时更新插件版本
-
-2. **安全考虑**
-   - 检查插件的安全漏洞
-   - 使用官方认证的插件
-   - 定期更新安全补丁
-
-3. **备份策略**
-   - 定期备份插件配置
-   - 记录插件版本信息
-   - 建立插件回滚机制
-
-<Card title="插件管理注意事项">
-1. 安装插件前先测试兼容性
-2. 重要插件更新要在测试环境验证
-3. 保持插件版本与Jenkins版本匹配
-4. 定期清理未使用的插件以提升性能
-</Card>
-
-# 三、常见问题处理
-
-## 3.1 插件相关问题
-
-### 3.1.1 插件安装失败
-<Steps>
-  <Step title="检查网络连接">
-    确保Jenkins服务器能够访问插件中心
-  </Step>
-  <Step title="配置代理">
-    如果需要代理访问外网，配置Jenkins的代理设置
-  </Step>
-  <Step title="手动安装">
-    下载插件hpi文件手动上传安装
-  </Step>
-</Steps>
-
-### 3.1.2 插件冲突
-1. 检查插件依赖关系
-2. 卸载冲突插件
-3. 安装兼容版本
-
-## 3.2 配置问题
-
-### 3.2.1 权限配置
-<Info>常见权限问题及解决方案</Info>
-
-1. 用户无法访问特定项目
-   - 检查项目权限矩阵
-   - 验证用户所属角色
-   - 确认全局安全设置
-
-2. 构建权限不足
-   - 检查系统权限
-   - 验证执行者权限
-   - 确认凭据配置
-
-### 3.2.2 构建环境问题
-<Warning>确保所有必要的构建工具都已正确配置</Warning>
-
-1. 工具路径配置
-2. 环境变量设置
-3. 依赖项检查
-
-<Card title="配置管理建议">
-1. 使用配置即代码管理Jenkins配置
-2. 定期备份系统配置
-3. 建立配置变更审核机制
-4. 保持配置文档的更新
-</Card>
