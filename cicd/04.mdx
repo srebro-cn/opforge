@@ -1,0 +1,491 @@
+---
+title: '🎨 Jenkins 常规配置&插件管理'
+description: '配置&插件'
+---
+
+![](https://s3api.srebro.cn:443/picgo/202506041356841.png)
+
+# 一、Jenkins常规配置
+
+## 1.1 系统配置
+
+### 1.1.1 全局安全配置
+    ![](https://s3api.srebro.cn:443/picgo/202506041416901.png)
+<Steps>
+  <Step title="访问控制">
+    - CSRF Protection：防止跨站请求伪造攻击
+    ![](https://s3api.srebro.cn:443/picgo/202506041417860.png)
+    - 代理兼容性：配置Jenkins通过代理服务器访问,通常Jenkins使用一个TCP端口和JNLP节点代理通讯。
+    ![](https://s3api.srebro.cn:443/picgo/202506041413034.png)
+  </Step>
+  <Step title="授权策略">
+    - Role-Based Strategy 基于角色的策略(需要安装`Role-Based Strategy`插件后才能使用，不展开说明，后续安装插件演示)
+    ![](https://s3api.srebro.cn:443/picgo/202506041425335.png)
+  </Step>
+  <Step title="安全域">
+    - 👍Jenkins数据库：使用Jenkins内置用户数据库
+    ![](https://s3api.srebro.cn:443/picgo/202506041426388.png)
+    - LDAP：集成企业LDAP目录服务(需要安装插件后才能使用)
+  </Step>
+</Steps>
+
+### 1.1.2 系统配置项
+![](https://s3api.srebro.cn:443/picgo/202506041428298.png)
+
+<Steps>
+  <Step title="系统消息">
+    - 此消息将显示在 Jenkins 主页的顶部。这对于向用户发布通知非常有用
+   ![](https://s3api.srebro.cn:443/picgo/202506041433221.png)
+  </Step>
+  <Step title="执行者数量">
+    - 控制Jenkins可以同时运行的构建数量,建议：CPU核心数 * 2
+   ![](https://s3api.srebro.cn:443/picgo/202506041432783.png)
+  </Step>
+  <Step title="标签">
+    - 标签为master,且只允许运行绑定到这台机器的Job
+   ![](https://s3api.srebro.cn:443/picgo/202506041438648.png)
+  </Step>
+  <Step title="环境变量">
+    - 全局环境变量设置
+   ![](https://s3api.srebro.cn:443/picgo/202506041441960.png)
+  </Step>  
+  <Step title="邮件通知">
+    -  SMTP服务器配置，发件人地址设置，邮件模板定制
+    <Info>默认的邮件发送功能不多，不展开说明，后续结合项目安装插件演示</Info>
+   ![](https://s3api.srebro.cn:443/picgo/202506041443782.png)
+  </Step>  
+</Steps>
+
+
+
+## 1.2 全局工具配置
+ <Info>个人建议不要在Jenkins页面上配置安装，手动进入到机器上安装各种工具</Info>
+![](https://s3api.srebro.cn:443/picgo/202506041522639.png)
+
+
+#### 1.2.1 安装openjdk
+<Note>Jenkins 需要使用java17 及以上，但代码打包依赖jdk11，所以一台机器会同时安装多个jdk环境</Note>
+
+```bash
+#安装openjdk-11.0.2
+wget https://mirrors.nju.edu.cn/openjdk/11.0.2/openjdk-11.0.2_linux-x64_bin.tar.gz -O /home/application/openjdk-11.0.2_linux-x64_bin.tar.gz
+tar -xf /home/application/openjdk-11.0.2_linux-x64_bin.tar.gz -C /home/application/ && rm -f /home/application/openjdk-11.0.2_linux-x64_bin.tar.gz
+ls -l /home/application/jdk-11.0.2/
+总用量 28
+drwxr-xr-x  2 root root 4096  6月  4 15:16 bin
+drwxr-xr-x  4 root root 4096  6月  4 15:16 conf
+drwxr-xr-x  3 root root 4096  6月  4 15:16 include
+drwxr-xr-x  2 root root 4096  6月  4 15:16 jmods
+drwxr-xr-x 72 root root 4096  6月  4 15:16 legal
+drwxr-xr-x  6 root root 4096  6月  4 15:16 lib
+-rw-r--r--  1  668  668 1214  1月 18  2019 release
+
+#验证java
+/home/application/jdk-11.0.2/bin/java --version
+openjdk 11.0.2 2019-01-15
+OpenJDK Runtime Environment 18.9 (build 11.0.2+9)
+OpenJDK 64-Bit Server VM 18.9 (build 11.0.2+9, mixed mode)
+```
+
+#### 1.2.2 安装git
+```bash
+yum install git
+```
+
+#### 1.2.3 安装maven
+<Note>maven本地缓存目录: 默认为 `${user.home}/.m2/repository`</Note>
+- 配置阿里云Maven全局代理加速
+
+<CodeGroup>
+
+```bash 安装maven
+wget https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz
+tar -xf apache-maven-3.9.9-bin.tar.gz -C /home/application && rm -rf apache-maven-3.9.9-bin.tar.gz
+ls -l /home/application/apache-maven-3.9.9
+总用量 48
+drwxr-xr-x 2 root root  4096  6月  4 15:24 bin
+drwxr-xr-x 2 root root  4096  6月  4 15:24 boot
+drwxr-xr-x 3 root root  4096  8月 14  2024 conf
+drwxr-xr-x 4 root root  4096  6月  4 15:24 lib
+-rw-r--r-- 1 root root 18920  8月 14  2024 LICENSE
+-rw-r--r-- 1 root root  5034  8月 14  2024 NOTICE
+-rw-r--r-- 1 root root  1279  8月 14  2024 README.txt
+```
+
+```bash 创建maven配置文件settings.xml
+mkdir ~/.m2
+touch ~/.m2/settings.xml
+```
+
+```xml 编辑settings.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <mirrors>
+		<mirror>
+			<id>aliyunmaven</id>
+			<mirrorOf>*</mirrorOf>
+			<name>阿里云公共仓库</name>
+			<url>https://maven.aliyun.com/repository/public</url>
+		</mirror>	
+    </mirrors>
+</settings>
+```
+
+```bash 配置maven环境变量
+cat >> /etc/profile << 'EOF'
+
+#maven
+export M2_HOME=/home/application/apache-maven-3.9.9
+export PATH=$M2_HOME/bin:$PATH
+EOF
+
+#使配置生效
+source /etc/profile
+
+#验证
+mvn -v
+
+Apache Maven 3.9.9 (8e8579a9e76f7d015ee5ec7bfcdc97d260186937)
+Maven home: /home/application/apache-maven-3.9.9
+Java version: 17.0.2, vendor: Oracle Corporation, runtime: /home/application/jdk-17.0.2
+Default locale: zh_CN, platform encoding: UTF-8
+OS name: "linux", version: "5.10.0-209.0.0.117.oe2203sp3.x86_64", arch: "amd64", family: "unix"
+
+```
+
+
+</CodeGroup>
+
+<Warning>如果想使用其它代理仓库,可在<repositories></repositories>节点中加入对应的仓库使用地址。以使用spring代理仓为例：</Warning>
+```xml
+<repository>
+    <id>spring</id>
+    <url>https://maven.aliyun.com/repository/spring</url>
+    <releases>
+        <enabled>true</enabled>
+    </releases>
+    <snapshots>
+        <enabled>true</enabled>
+    </snapshots>
+</repository>
+```
+
+
+#### 1.2.4 安装Nvn工具并配置Node.js,Yarn
+<Warning>在安装yarn 的时候，都需要先切换到Node.js，再安装yarn; yarn和Node.js版本关联</Warning>
+
+<CodeGroup>
+```bash  安装 nvm
+wget https://github.com/nvm-sh/nvm/archive/refs/tags/v0.40.3.tar.gz
+tar -xf v0.40.3.tar.gz -C /home/application && rm -rf v0.40.3.tar.gz
+ls -l /home/application/nvm-0.40.3
+总用量 288
+-rw-rw-r--  1 root root   2299  4月 24 07:34 bash_completion
+-rw-rw-r--  1 root root   7560  4月 24 07:34 CODE_OF_CONDUCT.md
+-rw-rw-r--  1 root root   5817  4月 24 07:34 CONTRIBUTING.md
+-rw-rw-r--  1 root root   3696  4月 24 07:34 Dockerfile
+-rw-rw-r--  1 root root    467  4月 24 07:34 GOVERNANCE.md
+-rwxrwxr-x  1 root root  16631  4月 24 07:34 install.sh
+-rw-rw-r--  1 root root   1113  4月 24 07:34 LICENSE.md
+-rw-rw-r--  1 root root   5440  4月 24 07:34 Makefile
+-rwxrwxr-x  1 root root    371  4月 24 07:34 nvm-exec
+-rwxrwxr-x  1 root root 150227  4月 24 07:34 nvm.sh
+-rw-rw-r--  1 root root   2925  4月 24 07:34 package.json
+-rw-rw-r--  1 root root   2935  4月 24 07:34 PROJECT_CHARTER.md
+-rw-rw-r--  1 root root  50661  4月 24 07:34 README.md
+-rwxrwxr-x  1 root root   1235  4月 24 07:34 rename_test.sh
+-rw-rw-r--  1 root root    882  4月 24 07:34 ROADMAP.md
+drwxrwxr-x 11 root root   4096  4月 24 07:34 test
+-rwxrwxr-x  1 root root   2478  4月 24 07:34 update_test_mocks.sh
+```
+
+```bash 配置全局环境变量
+cat >> /etc/profile << 'EOF'
+
+#nvm
+. /home/application/nvm-0.40.3/nvm.sh
+EOF
+
+#使环境变量生效
+source /etc/profile
+```
+
+
+```bash 验证nvm
+#nvm版本
+nvm -v
+0.40.3
+
+#nvm版本列表
+nvm ls-remote
+
+#安装node-v18.20.8
+nvm install v18.20.8
+
+#安装node-v16.17.1
+nvm install v16.17.1
+
+#查看本地所有node版本
+nvm ls
+       v18.20.8
+->     v16.17.1
+       v22.16.0
+
+#切换node版本
+nvm use v18.20.8
+
+#查看node版本
+node -v
+```
+
+
+```bash 设置npm加速地址
+npm config set registry https://registry.npmmirror.com
+
+npm config get registry
+https://registry.npmmirror.com
+```
+
+```bash 安装yarn并设置加速
+npm install -g yarn
+
+yarn config set registry https://registry.npmmirror.com
+
+yarn -v
+1.22.22
+```
+
+
+</CodeGroup>
+
+#### 1.2.5 在Jenkins服务器上测试打包
+* 前端代码库地址：https://gitee.com/log4j/pig-ui
+* 后端代码库地址：https://gitee.com/log4j/pig  
+
+<CodeGroup> 
+```bash VUE前端项目
+#拉取代码
+git clone https://gitee.com/log4j/pig-ui.git
+cd pig-ui/
+
+#安装依赖
+npm install
+
+#打包
+npm run build
+
+#查看打包结果
+ll dist/
+总用量 44
+drwxr-xr-x 4 root root 12288  6月  4 16:20 assets
+-rw-r--r-- 1 root root  4286  6月  4 16:19 favicon.ico
+-rw-r--r-- 1 root root 14371  6月  4 16:20 index.html
+-rw-r--r-- 1 root root  5080  6月  4 16:20 index.html.gz
+```
+
+
+```bash java后端项目
+#拉取代码
+git clone https://gitee.com/log4j/pig.git
+cd pig
+
+#打包
+mvn clean package -Dmaven.test.skip=true
+
+#查看打包结果
+ls -l pig-*/target
+pig-auth/target:
+总用量 103160
+drwxr-xr-x 5 root root      4096  6月  4 17:04 classes
+drwxr-xr-x 3 root root      4096  6月  4 17:04 generated-sources
+drwxr-xr-x 2 root root      4096  6月  4 17:04 maven-archiver
+drwxr-xr-x 3 root root      4096  6月  4 17:04 maven-status
+-rw-r--r-- 1 root root 105541653  6月  4 17:04 pig-auth.jar
+-rw-r--r-- 1 root root     70314  6月  4 17:04 pig-auth.jar.original
+
+pig-gateway/target:
+总用量 69792
+drwxr-xr-x 3 root root     4096  6月  4 17:04 classes
+drwxr-xr-x 3 root root     4096  6月  4 17:04 generated-sources
+drwxr-xr-x 2 root root     4096  6月  4 17:04 maven-archiver
+drwxr-xr-x 3 root root     4096  6月  4 17:04 maven-status
+-rw-r--r-- 1 root root 71431910  6月  4 17:04 pig-gateway.jar
+-rw-r--r-- 1 root root    14463  6月  4 17:04 pig-gateway.jar.original
+
+pig-register/target:
+总用量 196408
+drwxr-xr-x 3 root root      4096  6月  4 17:04 classes
+drwxr-xr-x 3 root root      4096  6月  4 17:04 generated-sources
+drwxr-xr-x 2 root root      4096  6月  4 17:04 maven-archiver
+drwxr-xr-x 3 root root      4096  6月  4 17:04 maven-status
+-rw-r--r-- 1 root root 201095558  6月  4 17:04 pig-register.jar
+-rw-r--r-- 1 root root      5796  6月  4 17:04 pig-register.jar.original
+
+```
+</CodeGroup>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 1.3 凭据配置
+
+### 1.3.1 凭据类型
+- 用户名密码
+- SSH密钥
+- Secret text
+- 证书
+- Token
+
+### 1.3.2 凭据范围
+- 系统：整个Jenkins系统可用
+- 全局：所有项目可用
+- 项目：特定项目专用
+
+
+
+
+## 1.4 用户/授权管理
+
+**待补充**
+
+
+
+# 二、Jenkins插件管理
+
+## 2.1 必备插件推荐
+
+<Steps>
+  <Step title="源代码管理">
+    - Git plugin：Git集成
+    - GitLab Plugin：GitLab集成
+    - GitHub Integration：GitHub集成
+    - Subversion：SVN集成
+  </Step>
+  <Step title="构建工具">
+    - Maven Integration：Maven项目支持
+    - Gradle Plugin：Gradle构建支持
+    - NodeJS Plugin：Node.js环境支持
+  </Step>
+  <Step title="流水线工具">
+    - Pipeline：流水线支持
+    - Blue Ocean：现代化界面
+    - Pipeline Utility Steps：流水线工具步骤
+  </Step>
+  <Step title="代码质量">
+    - SonarQube Scanner：代码质量检查
+    - Checkstyle：代码风格检查
+    - JaCoCo：代码覆盖率分析
+  </Step>
+</Steps>
+
+## 2.2 插件管理操作
+
+### 2.2.1 安装插件
+1. 在线安装
+```bash
+Manage Jenkins -> Plugins -> Available plugins
+```
+
+2. 手动安装
+```bash
+Manage Jenkins -> Plugins -> Advanced settings -> Upload Plugin
+```
+
+### 2.2.2 更新插件
+<Warning>更新插件前建议先备份Jenkins配置</Warning>
+
+```bash
+Manage Jenkins -> Plugins -> Updates
+```
+
+### 2.2.3 禁用插件
+```bash
+Manage Jenkins -> Plugins -> Installed plugins -> 选择插件 -> Disable
+```
+
+## 2.3 插件配置最佳实践
+
+1. **性能优化**
+   - 只安装必要的插件
+   - 定期清理未使用的插件
+   - 及时更新插件版本
+
+2. **安全考虑**
+   - 检查插件的安全漏洞
+   - 使用官方认证的插件
+   - 定期更新安全补丁
+
+3. **备份策略**
+   - 定期备份插件配置
+   - 记录插件版本信息
+   - 建立插件回滚机制
+
+<Card title="插件管理注意事项">
+1. 安装插件前先测试兼容性
+2. 重要插件更新要在测试环境验证
+3. 保持插件版本与Jenkins版本匹配
+4. 定期清理未使用的插件以提升性能
+</Card>
+
+# 三、常见问题处理
+
+## 3.1 插件相关问题
+
+### 3.1.1 插件安装失败
+<Steps>
+  <Step title="检查网络连接">
+    确保Jenkins服务器能够访问插件中心
+  </Step>
+  <Step title="配置代理">
+    如果需要代理访问外网，配置Jenkins的代理设置
+  </Step>
+  <Step title="手动安装">
+    下载插件hpi文件手动上传安装
+  </Step>
+</Steps>
+
+### 3.1.2 插件冲突
+1. 检查插件依赖关系
+2. 卸载冲突插件
+3. 安装兼容版本
+
+## 3.2 配置问题
+
+### 3.2.1 权限配置
+<Info>常见权限问题及解决方案</Info>
+
+1. 用户无法访问特定项目
+   - 检查项目权限矩阵
+   - 验证用户所属角色
+   - 确认全局安全设置
+
+2. 构建权限不足
+   - 检查系统权限
+   - 验证执行者权限
+   - 确认凭据配置
+
+### 3.2.2 构建环境问题
+<Warning>确保所有必要的构建工具都已正确配置</Warning>
+
+1. 工具路径配置
+2. 环境变量设置
+3. 依赖项检查
+
+<Card title="配置管理建议">
+1. 使用配置即代码管理Jenkins配置
+2. 定期备份系统配置
+3. 建立配置变更审核机制
+4. 保持配置文档的更新
+</Card>
