@@ -40,7 +40,27 @@ Jenkins提供了多种部署方式，用户可以根据自己的需求选择合�
 </Card>
 
 # 三、Jenkins 常规配置&插件管理
+全局安全配置
+<Steps>
+  <Step title="访问控制">
+    - CSRF Protection：防止跨站请求伪造攻击
+    ![](https://s3api.srebro.cn:443/picgo/202506041417860.png)
+    - 代理兼容性：配置Jenkins通过代理服务器访问,通常Jenkins使用一个TCP端口和JNLP节点代理通讯。
+    ![](https://s3api.srebro.cn:443/picgo/202506041413034.png)
+  </Step>
+  <Step title="授权策略">
+    - Role-Based Strategy 基于角色的策略(需要安装`Role-Based Strategy`插件后才能使用，不展开说明，后续安装插件演示)
+    ![](https://s3api.srebro.cn:443/picgo/202506041425335.png)
+  </Step>
+  <Step title="安全域">
+    - 👍Jenkins数据库：使用Jenkins内置用户数据库
+    ![](https://s3api.srebro.cn:443/picgo/202506041426388.png)
+    - LDAP：集成企业LDAP目录服务(需要安装插件后才能使用)
+  </Step>
+</Steps>
 
+<Card title="👆️ 点击这里，查看Jenkins 常规配置&插件管理"href="/cicd/04">
+</Card>
 
 # 四、Jenkins共享库设计与应用
 
