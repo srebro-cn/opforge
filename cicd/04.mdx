@@ -19,8 +19,8 @@ description: '配置&插件'
     ![](https://s3api.srebro.cn:443/picgo/202506041413034.png)
   </Step>
   <Step title="授权策略">
-    - Role-Based Strategy 基于角色的策略(需要安装`Role-Based Strategy`插件后才能使用，不展开说明，后续安装插件演示)
-    ![](https://s3api.srebro.cn:443/picgo/202506041425335.png)
+    默认是`登录用户可以做任何事情`；后面有说到基于RBAC的授权策略，这里先不介绍。
+    ![](https://s3api.srebro.cn:443/picgo/202506051409580.png)
   </Step>
   <Step title="安全域">
     - 👍Jenkins数据库：使用Jenkins内置用户数据库
@@ -329,22 +329,88 @@ drwxr-xr-x 3 root root      4096  6月  4 17:04 maven-status
 
 ## 1.3 凭据配置
 
-### 1.3.1 凭据类型
-- 用户名密码
-- SSH密钥
-- Secret text
-- 证书
-- Token
+### 1.3.1 查看凭据
+<Note>系统管理 → 凭证</Note>
+![](https://s3api.srebro.cn:443/picgo/202506051050253.png)
 
-### 1.3.2 凭据范围
-- 系统：整个Jenkins系统可用
-- 全局：所有项目可用
-- 项目：特定项目专用
+<Note>系统管理 → 凭据 → 系统 →  全局凭据</Note>
+### 1.3.2 新建凭据
+![](https://s3api.srebro.cn:443/picgo/202506051053032.png)
 
+### 1.3.3 凭据类型
+![](https://s3api.srebro.cn:443/picgo/202506051048583.png)
+- 用户名和密码凭据：用于存储用户名和密码，例如 Git、Subversion 或其他源代码管理工具的凭据。
+- SSH 用户名和私钥凭据：用于存储 SSH 用户名和私钥，例如 Git、Subversion 或其他源代码管理工具的凭据。
+- 证书凭据：用于存储证书，例如 SSL 证书、SSH 证书等。
+- Secret text：用于存储敏感的文本信息，例如 API 密钥、密码等。
+- Docker 凭据：用于存储 Docker Hub 或其他 Docker 仓库的凭据。
+- Kubernetes 配置文件：用于存储 Kubernetes 集群的配置文件。
 
 ## 1.4 用户/授权管理
 
-**待补充**
+### 1.4.1 用户管理
+<Note>Jenkins默认使用自带的数据库管理用户， 也可以通过安装插件实现LDAP、GitLab认证集成。</Note>
+![](https://s3api.srebro.cn:443/picgo/202506051336819.png)
+<Accordion title="🦎Jenkins使用文件存储，在JENKINS_HOME/users目录中可以看到每个用户的配置">
+![](https://s3api.srebro.cn:443/picgo/202506051353981.png)
+</Accordion>
+
+<Note>系统管理 → 用户设置</Note>
+![](https://s3api.srebro.cn:443/picgo/202506051338582.png)
+> 查看到当前的用户列表；可以对用户新建、更新、删除。
+
+![](https://s3api.srebro.cn:443/picgo/202506051347015.png)
+![](https://s3api.srebro.cn:443/picgo/202506051344361.png)
+
+
+### 1.4.2 基于RBAC模式的授权管理
+<Note>需要使用到Role-based Authorization Strategy插件</Note>
+在日常Jenkins 使用过，不同的人员岗位对于JOB有不同的权限，比如开发人员只能看到JOB的构建内容,而不能进行构建、部署等操作。
+而QA，SRE人员就可以操作所有的JOB，这时候就需要用到RBAC，即基于角色的访问控制。
+
+
+**RBAC 核心概念**
+- **角色（Role）**：定义一组权限的集合  
+- **用户（User）**：系统中的操作主体  
+- **绑定（Binding）**：将用户与角色关联  
+
+
+
+<Steps>
+  <Step title="安装插件">
+<Note>系统管理 → 管理插件 → 可用插件 → 输入Role-based Authorization Strategy</Note>
+![](https://s3api.srebro.cn:443/picgo/202506051357802.png)
+![](https://s3api.srebro.cn:443/picgo/202506051359298.png)
+  </Step>
+  <Step title="配置全局安全配置，指定授权策略为Role-Based Strategy">
+  <Note>系统管理 → 系统配置 → 全局安全配置 → 授权策略</Note>
+    ![](https://s3api.srebro.cn:443/picgo/202506051405964.png)
+然后保存修改， 返回Jenkins系统设置页面，可以看到Manage and Assign Roles设置。
+    ![](https://s3api.srebro.cn:443/picgo/202506051408282.png)
+  </Step>
+  <Step title="创建Role">
+    - 进入Manage and Assign Roles设置， 选择Manage Roles：
+    ![](https://s3api.srebro.cn:443/picgo/202506051417043.png)
+    - 创建 Gobal Role developer ：具有全局Read权限。
+    ![](https://s3api.srebro.cn:443/picgo/202506051447919.png)
+    - 创建 item roles dev2025:  使用正则表达式匹配关联的一组项目，匹配以dev2025-开头且任意结尾的作业，任务读取权限。
+    ![](https://s3api.srebro.cn:443/picgo/202506051448885.png)
+  </Step>
+  <Step title="分配Role">
+    - 进入Manage and Assign Roles设置， 选择Assign Roles：
+    ![](https://s3api.srebro.cn:443/picgo/202506051436906.png)
+  </Step>
+  <Step title="预先创建好多个JOB,进行权限测试">
+  ![](https://s3api.srebro.cn:443/picgo/202506051440340.png)
+  </Step>  
+  <Step title="切换到dev01用户下">
+  - 只显示dev2025开头的项目，并且只有只读的权限。
+  ![](https://s3api.srebro.cn:443/picgo/202506051449461.png)
+  ![](https://s3api.srebro.cn:443/picgo/202506051450109.png)
+  </Step> 
+</Steps>
+
+
 
 
 # 二、Jenkins插件管理
