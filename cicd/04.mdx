@@ -404,13 +404,13 @@ drwxr-xr-x 3 root root      4096  6月  4 17:04 maven-status
   ![](https://s3api.srebro.cn:443/picgo/202506051440340.png)
   </Step>  
   <Step title="切换到dev01用户下">
-  - 只显示dev2025开头的项目，并且只有只读的权限。
+  只显示dev2025开头的项目，并且只有只读的权限。
   ![](https://s3api.srebro.cn:443/picgo/202506051449461.png)
   ![](https://s3api.srebro.cn:443/picgo/202506051450109.png)
   </Step> 
   <Step title="切换到dev02用户下">
-  如果未赋予用户Global Role  "read"会报错。
-  ![](https://s3api.srebro.cn:443/picgo/202506051500938.png)
+  未赋予用户Global Role  "read" 权限，报错。
+  ![](https://s3api.srebro.cn:443/picgo/202506051505403.png)
   </Step> 
 </Steps>
 
@@ -471,13 +471,13 @@ java -Dhudson.model.DownloadService.noSignatureCheck=true -jar jenkins.war
 
 
 ## 2.4 安装常用插件
-早在安装jenkins的时候，其实我们就已经预装了一批社区推荐的插件，但是想要真正的用好jenkins 还不够，我们还需要安装一些插件，去丰富我们的Jenkins
+在初始化Jenkins 的时候，我们就已经预装了一批社区推荐的插件，但是想要真正的用好jenkins 还不够，我们还需要安装一些插件，去丰富我们的Jenkins
 
 | 名称                              | 功能                                                         | 备注                                                         |
 | --------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Role-Based Strategy               | Jenkins用户视图权限管理插件                                  | https://wiki.jenkins.io/display/JENKINS/Role+Strategy+Plugin |
-| Job Configuration History         | jenkins配置回退插件 | https://wiki.jenkins.io/display/JENKINS/JobConfigHistory+Plugin |
-| Email Extension Template          | Jenkins复杂邮件推送功能，可自定义邮件主题，内容，定义邮件接收对象 | https://plugins.jenkins.io/email-ext/#plugin-content-documentation |
+| 👍Role-Based Strategy               | Jenkins用户视图权限管理插件                                  | https://wiki.jenkins.io/display/JENKINS/Role+Strategy+Plugin |
+| 👍Job Configuration History         | jenkins配置回退插件 | https://wiki.jenkins.io/display/JENKINS/JobConfigHistory+Plugin |
+| 👍Email Extension Template          | Jenkins复杂邮件推送功能，可自定义邮件主题，内容，定义邮件接收对象 | https://plugins.jenkins.io/email-ext/#plugin-content-documentation |
 | Publish Over SSH                  | 通过在jenkins 服务器上 以ssh的方式向远端机器执行命令         | https://plugins.jenkins.io/publish-over-ssh                  |
 | Generic Webhook Trigger           | 基于Gitlab钩子提交合并代码触发jenkins构建                    | https://plugins.jenkins.io/generic-webhook-trigger           |
 | SonarQube Scanner                 | jenkins 上集成 sonarqube 代码质量检测功能                    | https://plugins.jenkins.io/sonar/#documentation              |
@@ -485,5 +485,5 @@ java -Dhudson.model.DownloadService.noSignatureCheck=true -jar jenkins.war
 | Build Name and Description Setter | 自定义构建的名称和描述 | https://plugins.jenkins.io/build-name-setter/                |
 | Console Column                    | 提供可用于视图的快速路径控制台链接，能够在项目视图首页展示项目构建输出面板的地址 | https://plugins.jenkins.io/console-column-plugin/            |
 | figlet-buildstep                  | 允许你在构建过程中输出一个简单的横幅，注意只支持显示英文单词,单词和单词之间只允许一个空格 | https://plugins.jenkins.io/figlet-buildstep/                 |
-| sidebar-link                      | 在 Jenkins 主页、视图选项卡和项目页面的侧边栏中添加自定义链接 | https://plugins.jenkins.io/sidebar-link/                     |
+| 👍sidebar-link                      | 在 Jenkins 主页、视图选项卡和项目页面的侧边栏中添加自定义链接 | https://plugins.jenkins.io/sidebar-link/                     |
 | Metrics                           | 用于收集和展示Jenkins实例的性能数据和指标的插件，可以接入到Prometheus中 | https://plugins.jenkins.io/metrics                           |
