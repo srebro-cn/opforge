@@ -398,3 +398,22 @@ java -Dhudson.model.DownloadService.noSignatureCheck=true -jar jenkins.war
   </Step>
 
 </Steps>
+
+
+## 2.4 安装常用插件
+早在安装jenkins的时候，其实我们就已经预装了一批社区推荐的插件，但是想要真正的用好jenkins 还不够，我们还需要安装一些插件，去丰富我们的Jenkins
+
+| 名称                              | 功能                                                         | 备注                                                         |
+| --------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Role-Based Strategy               | Jenkins用户视图权限管理插件                                  | https://wiki.jenkins.io/display/JENKINS/Role+Strategy+Plugin |
+| Job Configuration History         | jenkins配置回退插件 | https://wiki.jenkins.io/display/JENKINS/JobConfigHistory+Plugin |
+| Email Extension Template          | Jenkins复杂邮件推送功能，可自定义邮件主题，内容，定义邮件接收对象 | https://plugins.jenkins.io/email-ext/#plugin-content-documentation |
+| Publish Over SSH                  | 通过在jenkins 服务器上 以ssh的方式向远端机器执行命令         | https://plugins.jenkins.io/publish-over-ssh                  |
+| Generic Webhook Trigger           | 基于Gitlab钩子提交合并代码触发jenkins构建                    | https://plugins.jenkins.io/generic-webhook-trigger           |
+| SonarQube Scanner                 | jenkins 上集成 sonarqube 代码质量检测功能                    | https://plugins.jenkins.io/sonar/#documentation              |
+| Blue Ocean                        | 基于web 的可视化流水线                                       | https://plugins.jenkins.io/blueocean/                        |
+| Build Name and Description Setter | 自定义构建的名称和描述 | https://plugins.jenkins.io/build-name-setter/                |
+| Console Column                    | 提供可用于视图的快速路径控制台链接，能够在项目视图首页展示项目构建输出面板的地址 | https://plugins.jenkins.io/console-column-plugin/            |
+| figlet-buildstep                  | 允许你在构建过程中输出一个简单的横幅，注意只支持显示英文单词,单词和单词之间只允许一个空格 | https://plugins.jenkins.io/figlet-buildstep/                 |
+| sidebar-link                      | 在 Jenkins 主页、视图选项卡和项目页面的侧边栏中添加自定义链接 | https://plugins.jenkins.io/sidebar-link/                     |
+| Metrics                           | 用于收集和展示Jenkins实例的性能数据和指标的插件，可以接入到Prometheus中 | https://plugins.jenkins.io/metrics                           |
