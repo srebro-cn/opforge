@@ -2,4 +2,375 @@
 title: '🎽 Jenkins Pipeline & 代码管理'
 ---
 
-未完待续！！！
+# Jenkins Pipeline基础语法
+
+## 什么是Pipeline
+
+Pipeline是Jenkins的一个核心特性，Pipeline提供了一组可扩展的工具，
+用于将"简单到复杂"的交付流程以代码的形式实现和集成到Jenkins中。
+Jenkins在运行Pipeline任务的时候会按照Jenkinsfile中定义的代码顺序执行。
+Jenkinsfile类似于Dockerfile，具有一套特定的语法。
+
+## 如何使用Pipeline
+
+## 安装Pipeline插件
+<Info>在初始化Jenkins 的时候会默认安装好pipeline插件</Info>
+在创建Pipeline类型的作业的时候，需要提前安装好pipeline插件，不然可能会出现找不到pipeline类型的作业。
+进入插件管理， 搜索关键字"pipeline" 。安装后重启一下。
+
+
+![](https://s3api.srebro.cn:443/picgo/202506061747747.png)
+当Jenkins重启成功后，我们创建一个流水线类型的作业。
+![](https://s3api.srebro.cn:443/picgo/202506061749462.png)
+编写流水线代码
+![](https://s3api.srebro.cn:443/picgo/202506061750957.png)
+
+
+## 如何编写Pipeline？
+
+Jenkinsfile是一个文本文件，包含了Jenkins Pipeline的定义。它可以被提交到项目的源代码控制仓库中（`Jenkinsfile`，比如我们后面要说到的共享库），也可以直接写在Jenkins的配置页面中。
+基本示例：
+```groovy
+pipeline {
+    agent any
+    
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
+```
+
+## 声明式管道与脚本式管道
+
+Jenkins Pipeline支持两种语法：声明式（Declarative）和脚本式（Scripted），是两种不同的语法风格，主要区别体现在​​结构化程度​​、​​语法约束​​和​​适用场景​​上。
+以下通过具体代码示例和对比说明两者的差异。
+
+<Info>以下通过一个「构建并部署 Java 应用」的 Pipeline 场景，分别用声明式和脚本式实现</Info>
+
+### 声明式Pipeline
+- 强制使用 stages 划分阶段，每个阶段的 steps 必须明确
+- 更严格的语法结构
+- 更容易读写
+- 从Jenkins 2.5开始引入
+```groovy
+pipeline {
+  agent any  // 必须指定执行节点
+  stages {
+    stage('Hello') {  // 必须用 stage 划分阶段
+      steps {
+        sh 'echo "声明式：Hello World"'  // 步骤必须在 steps 块内
+      }
+    }
+  }
+}
+```
+
+### 脚本式Pipeline
+- 基于Groovy语言
+- 提供更大的灵活性
+- 无强制结构，用 node 替代 agent，步骤更自由
+```groovy
+node {  // 用 node 替代 agent（可选，但通常保留）
+  stage('Hi') {  // stage 可选（但习惯保留）
+    sh 'echo "脚本式：Hi Jenkins"'  // 步骤直接写，无需 steps 块
+  }
+  // 直接嵌入 Groovy 逻辑（声明式做不到）
+  def msg = '动态消息'
+  sh "echo ${msg}"  // 直接拼接变量（声明式需用 env 或特定块）
+}
+```
+
+### 声明式与脚本式核心差异
+- 声明式像「填表格」（必须按 pipeline > agent > stages > steps 结构填写）；
+- 脚本式像「写代码」（用 Groovy 自由组合，node/stage/sh 随意嵌套）。
+
+
+
+## Pipeline语法核心组件
+
+### 1. Pipeline
+Pipeline是声明式Pipeline的顶层组件：
+```groovy
+pipeline {
+    // 所有的声明式Pipeline内容
+}
+```
+
+### 2. Agent
+Jenkins采用分布式架构，分为server节点和agent节点。server节点也是可以运行构建任务的，一般使其主要来做任务的调度。agent节点专门用于任务的执行。
+随着现在容器的盛行，agent节点可以分为静态节点和动态节点。 静态节点是固定的一台vm虚机或者容器。动态节点是随着任务的构建来自动创建agent节点。
+```groovy
+agent {
+    label 'my-defined-label'
+}
+
+// 或者简单形式
+agent any
+```
+
+### 3. Stages
+在Jenkins pipeline中，一条流水线是由多个阶段组成的，每个阶段一个stage。例如：构建、测试、部署等等。
+```groovy
+stages {
+    stage('Build') { ... }
+    stage('Test') { ... }
+    stage('Deploy') { ... }
+}
+```
+
+### 4. Stage
+定义概念性的不同的构建阶段：
+```groovy
+stage('Build') {
+    steps {
+        sh 'make'
+    }
+}
+```
+
+### 5. Post
+定义Pipeline或stage完成后的操作：
+```groovy
+post {
+    always {
+        echo 'This will always run'
+    }
+    success {
+        echo 'This will run only if successful'
+    }
+    failure {
+        echo 'This will run only if failed'
+    }
+}
+```
+
+我们可以根据地铁线路图来理解pipeline ：
+
+- ​pipeline​​：整条地铁 1 号线的「运营体系」（从规划到运行的整体框架）。
+- ​​agent​​：执行运输的「地铁列车」（承载任务运行的载体）。
+- ​​stages​​：地铁 1 号线的「完整站点路线」（从起点到终点的所有站点顺序规划）。
+- ​​stage​​：路线中的「单个站点」对应 Pipeline 中一个具体的任务步骤）。
+- ​​post​​：列车完成「全程运行（所有站点）」后的「收尾操作」（例如：到达终点站后清客、检查车辆状态、为下一班次做准备等）。
+
+<Card title="南京地铁🚇一号线" img="https://s3api.srebro.cn:443/picgo/202506061637422.jpg">
+  轨道交通线路图
+</Card>
+
+
+## 高级Pipeline组件
+
+### 1. Environment
+定义环境变量：
+```groovy
+environment {
+    MAVEN_HOME = '/usr/local/maven'
+}
+```
+
+### 2. Options
+Pipeline特定选项：
+```groovy
+options {
+    timeout(time: 1, unit: 'HOURS')
+    disableConcurrentBuilds()
+}
+```
+
+### 3. Parameters
+构建参数：
+```groovy
+parameters {
+    string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: '')
+    booleanParam(name: 'DEBUG_BUILD', defaultValue: true, description: '')
+}
+```
+
+### 4. Triggers
+构建触发器：
+```groovy
+triggers {
+    cron('H */4 * * 1-5')
+    pollSCM('H */4 * * 1-5')
+}
+```
+
+### 5. Tools
+自动安装和放入PATH的工具：
+```groovy
+tools {
+    maven 'apache-maven-3.8.1'
+    jdk 'jdk11'
+}
+```
+
+### 6. Input
+人工输入：
+```groovy
+input {
+    message "Should we continue?"
+    ok "Yes, we should."
+    parameters {
+        string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+    }
+}
+```
+
+### 7. When
+条件执行：
+```groovy
+when {
+    branch 'master'
+    environment name: 'DEPLOY_TO', value: 'production'
+}
+```
+
+### 8. Script
+在声明式Pipeline中执行脚本式Pipeline代码：
+```groovy
+script {
+    def browsers = ['chrome', 'firefox']
+    for (int i = 0; i < browsers.size(); ++i) {
+        echo "Testing the ${browsers[i]} browser"
+    }
+}
+```
+
+# Jenkins Pipeline开发技巧
+
+## 编写测试Pipeline
+
+1. **使用Replay功能**
+   - 在Jenkins UI中可以快速测试Pipeline修改
+   - 不需要提交到SCM就能测试改动
+
+2. **使用Pipeline Syntax生成器**
+   - Jenkins提供了语法生成器
+   - 位于Pipeline job的"Pipeline Syntax"链接
+
+3. **分阶段验证**
+```groovy
+pipeline {
+    agent any
+    stages {
+        stage('Validate') {
+            steps {
+                sh 'echo "First, validate the app..."'
+                sh 'make validate'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'echo "Next, test the app..."'
+                sh 'make test'
+            }
+        }
+    }
+}
+```
+
+## Pipeline问题排错思路
+
+1. **查看Pipeline Steps**
+   - 使用Blue Ocean插件可视化查看步骤
+   - 检查每个步骤的日志输出
+
+2. **使用echo调试**
+```groovy
+steps {
+    script {
+        echo "DEBUG: Current environment is ${env.ENVIRONMENT}"
+        echo "DEBUG: Build number is ${env.BUILD_NUMBER}"
+    }
+}
+```
+
+3. **使用try-catch处理错误**
+```groovy
+steps {
+    script {
+        try {
+            sh 'some-command'
+        } catch (exc) {
+            echo 'Something failed, but I want to keep going'
+        }
+    }
+}
+```
+
+## Jenkinsfile的常见管理方式
+
+1. **源代码控制**
+   - 将Jenkinsfile放在代码仓库的根目录
+   - 与应用代码一起版本控制
+
+2. **共享库**
+```groovy
+@Library('my-shared-library') _
+
+pipeline {
+    agent any
+    stages {
+        stage('Example') {
+            steps {
+                mySharedFunction()
+            }
+        }
+    }
+}
+```
+
+3. **模板化**
+   - 创建标准化的Pipeline模板
+   - 在不同项目中重用
+```groovy
+// Template Jenkinsfile
+def call(Map config) {
+    pipeline {
+        agent any
+        stages {
+            stage('Build') {
+                steps {
+                    sh "${config.buildCommand}"
+                }
+            }
+        }
+    }
+}
+```
+
+4. **配置即代码**
+   - 使用YAML或JSON配置文件
+   - Pipeline读取配置文件动态生成步骤
+```groovy
+def config = readYaml file: 'jenkins-config.yml'
+pipeline {
+    agent any
+    stages {
+        stage('Dynamic Stage') {
+            steps {
+                script {
+                    config.steps.each { step ->
+                        sh "${step}"
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+通过以上内容，你应该能够开始使用Jenkins Pipeline，并且了解如何编写、测试和管理Pipeline代码。记住，好的Pipeline应该是可维护的、可重用的，并且能够清晰地表达你的持续交付流程。
