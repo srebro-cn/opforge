@@ -228,24 +228,89 @@ pipeline {
 ## 二、Pipeline高级语法介绍
 
 ### 1. Environment
-定义环境变量：
-```groovy
-environment {
-    MAVEN_HOME = '/usr/local/maven'
+定义环境变量： 通过键值对key:valued的格式定义流水线在运行时的环境变量， 分为流水线级别和阶段级别。
+
+<CodeGroup>
+```groovy 流水线级别
+pipeline {
+    environment {
+     	NAME = "srebro"
+        base_env = "prod"
+    }
 }
 ```
+```groovy 阶段级别
+pipeline {
+.....
+.....
+    stages{
+        stage('Build') {
+        environment{
+            VERSION="test"
+        }
+        steps{
+            Script {
+               echo "${VERSION}"
+                }
+            }
+        }
+    }
+}
+```
+</CodeGroup>
 
-### 2. Options
-Pipeline特定选项：
-```groovy
+
+### 2. Options 运行时选项
+Pipeline特定选项
+```groovy 
 options {
-    timeout(time: 1, unit: 'HOURS')
-    disableConcurrentBuilds()
+
+    timeout(time: 1, unit: 'HOURS')     //设定流水线的超时时间(可用于阶段级别)
+    disableConcurrentBuilds() //禁止并行构建   
+    options { buildDiscarder(logRotator(numToKeepStr: '1')) } //设置构建保留策略,保留最近的记录
+    options { skipDefaultCheckout() }   //跳过默认的代码检出
+    options { retry(3) }   //设置重试次数(可用于阶段级别)
+    options { timestamps() } //设置时间戳输出(可用于阶段级别)
+}
+```
+- 案例参考
+```groovy
+pipeline{
+    options{
+        disableConcurrentBuilds()
+        skipDefaultCheckout()
+        timeout(time: 1, unit: 'HOURS')
+    }
+    stages{
+        stage('Build') {
+            options{
+                timeout(time: 3, unit: 'MINUTES')
+                retry(3)
+                timestamps()
+            }
+            steps{
+                script{
+                    ehco "hello"
+                }
+            }
+        }
+    }
 }
 ```
 
-### 3. Parameters
-构建参数：
+<Warning>如果存在下面的👇报错提示，需要安装插件 Timestamper </Warning>
+
+WorkflowScript: 21: Invalid option type "timestamps". Valid option types: [authorizationMatrix, buildDiscarder, catchError, checkoutToSubdirectory, disableConcurrentBuilds, disableResume, durabilityHint, lock, overrideIndexTriggers, parallelsAlwaysFailFast, preserveStashes, quietPeriod, rateLimitBuilds, retry, script, skipDefaultCheckout, skipStagesAfterUnstable, timeout, waitUntil, warnError, withChecks, withContext, withCredentials, withEnv, wrap, ws] @ line 21, column 3.
+   		timestamps()
+     ^
+```
+![](https://s3api.srebro.cn:443/picgo/202506092336329.png)
+
+
+### 3. Parameters流水线参数
+- 定义： 流水线在运行时设置的参数，UI页面的参数。所有的参数都存储在params对象中。
+- 将web ui页面中定义的参数，以pipeline的方式定义。
+
 ```groovy
 parameters {
     string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: '')
