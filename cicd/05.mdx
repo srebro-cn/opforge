@@ -273,6 +273,7 @@ options {
     options { timestamps() } //设置时间戳输出(可用于阶段级别)
 }
 ```
+
 - 案例参考
 ```groovy
 pipeline{
@@ -298,14 +299,15 @@ pipeline{
 }
 ```
 
-<Warning>如果存在下面的👇报错提示，需要安装插件 Timestamper </Warning>
+<Warning>如果存在下面的👇报错提示,需要安装插件Timestamper</Warning>
 
+```groovy
 WorkflowScript: 21: Invalid option type "timestamps". Valid option types: [authorizationMatrix, buildDiscarder, catchError, checkoutToSubdirectory, disableConcurrentBuilds, disableResume, durabilityHint, lock, overrideIndexTriggers, parallelsAlwaysFailFast, preserveStashes, quietPeriod, rateLimitBuilds, retry, script, skipDefaultCheckout, skipStagesAfterUnstable, timeout, waitUntil, warnError, withChecks, withContext, withCredentials, withEnv, wrap, ws] @ line 21, column 3.
    		timestamps()
      ^
 ```
-![](https://s3api.srebro.cn:443/picgo/202506092336329.png)
 
+![](https://s3api.srebro.cn:443/picgo/202506092336329.png)
 
 ### 3. Parameters流水线参数
 - 定义： 流水线在运行时设置的参数，UI页面的参数。所有的参数都存储在params对象中。
