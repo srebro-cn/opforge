@@ -312,13 +312,33 @@ WorkflowScript: 21: Invalid option type "timestamps". Valid option types: [autho
 ### 3. Parameters流水线参数
 - 定义： 流水线在运行时设置的参数，UI页面的参数。所有的参数都存储在params对象中。
 - 将web ui页面中定义的参数，以pipeline的方式定义。
+- 参数类型：
+  - string：字符串参数
+  - boolean：布尔参数
+  - choice：选择参数
+  - password：密码参数
+  - text：多行文本参数
+  - file：文件参数
+  - credentials：凭证参数
+  - run  ：运行参数
+![](https://s3api.srebro.cn:443/picgo/202506101121615.png)
 
 ```groovy
 parameters {
-    string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: '')
+    string(name: 'VERSION', defaultValue: 'V1.0.0', description: '版本')
     booleanParam(name: 'DEBUG_BUILD', defaultValue: true, description: '')
+    choice(name: 'BUILD_TYPE', choices: ['debug', 'release'], description: '')
+    password(name: 'PASSWORD', defaultValue: '123456', description: '密码')
+    text(name: 'DESCRIPTION', defaultValue: '描述', description: '')
+    file(name: 'FILE', description: '文件')
+    credentials(name: 'CREDENTIALS', description: '凭证')
+    run(name: 'RUN', description: '运行')
 }
 ```
+<Tip>配置了parameters流水线参数，需要先构建一次，渲染下流水线的参数化构建</Tip>
+![](https://s3api.srebro.cn:443/picgo/202506101125236.png)
+
+
 
 ### 4. Triggers
 构建触发器：
