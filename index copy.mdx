@@ -1,0 +1,56 @@
+---
+title: 项目介绍
+description: ""
+---
+
+
+export const HeroCard = ({ filename, title, description, href }) => {
+  return (
+    <a className="group cursor-pointer pb-8" href={href}>
+      <img src={`https://mintlify.s3.us-west-1.amazonaws.com/mintlify/images/hero/${filename}.png`} className="block dark:hidden pointer-events-none group-hover:scale-105 transition-all duration-100" />
+      <img src={`https://mintlify.s3.us-west-1.amazonaws.com/mintlify/images/hero/${filename}-dark.png`} className="pointer-events-none group-hover:scale-105 transition-all duration-100 hidden dark:block" />
+      <h3 className="mt-5 text-gray-900 dark:text-zinc-50 font-medium">{title}</h3>
+      <span className="mt-1.5">
+        {description}
+      </span>
+    </a>
+  )
+}
+
+<div className="relative">
+<div className="absolute top-0 lg:-top-16 left-0 right-0">
+<img
+  src="/images/background-light.png"
+  className="block dark:hidden pointer-events-none"
+/>
+<img
+  src="/images/background-dark.png"
+  className="hidden dark:block pointer-events-none"
+/>
+
+</div>
+
+<div className="px-4 py-16 lg:py-48 lg:pb-24 max-w-3xl mx-auto">
+<h1 className="text-4xl font-medium text-center text-gray-800 dark:text-zinc-50 tracking-tight">
+👋欢迎，来到opforge运维知识库
+
+</h1>
+
+<p className="max-w-xl mx-auto px-4 mt-4 text-lg text-center text-gray-500 dark:text-zinc-500">
+Ops=运维，Forge=锻造/知识沉淀。
+</p>
+
+<div className="px-6 lg:px-0 mt-12 lg:mt-24 grid sm:grid-cols-2 gap-x-6 gap-y-4">
+<HeroCard filename="rocket" title="项目一" description="企业级自动化部署平台搭建" href="https://srebro.cn/future.html" />
+
+<HeroCard filename="cli" title="项目二" description="全链路监控+日志收集系统建设" href="https://srebro.cn/future.html" />
+
+<HeroCard filename="editor" title="项目三" description="K8S容器化改造与CI/CD流程优化" href="https://srebro.cn/future.html" />
+
+<HeroCard filename="components" title="项目四" description="运维开发-CMDB资产管理平台" href="https://srebro.cn/future.html" />
+
+</div>
+
+</div>
+
+</div>
